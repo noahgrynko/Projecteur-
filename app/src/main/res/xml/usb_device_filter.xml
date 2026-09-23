@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Accessoires IR reconnus. Associer l'application ici permet à Android de mémoriser l'autorisation USB. -->
+<resources>
+    <!-- Dangerous Prototypes USB IR Toy v2 / Irdroid USB IR Transceiver -->
+    <usb-device vendor-id="1240" product-id="64776" />
+    <!-- Cartes courantes pour le pont PROJIR : Arduino (Leonardo/Micro), Raspberry Pi Pico, Espressif (ESP32-S2/S3) -->
+    <usb-device vendor-id="9025" />
+    <usb-device vendor-id="11914" />
+    <usb-device vendor-id="12346" />
+    <!-- Convertisseurs USB-série : WCH CH340, Silicon Labs CP210x, FTDI -->
+    <usb-device vendor-id="6790" />
+    <usb-device vendor-id="4292" />
+    <usb-device vendor-id="1027" />
+</resources>
