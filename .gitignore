@@ -1,5 +1,6 @@
 # Gradle / Android Studio
 .gradle/
+.kotlin/
 build/
 /app/build/
 local.properties
