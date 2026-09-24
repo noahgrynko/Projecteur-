@@ -1,0 +1,4 @@
+Source: https://github.com/Lucaslhm/Flipper-IRDB (CC0 1.0)
+Dossier: Projectors/
+Commit: d126fb1b6f1e114c52b4a8c19839ea65e3a9c24d (2026-04-11)
+Fichiers copiés sans modification. Mise à jour : tools/update_irdb.sh

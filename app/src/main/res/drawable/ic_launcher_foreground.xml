@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Télécommande stylisée : corps, bouton power rouge, croix directionnelle. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <path android:fillColor="#E8EAED"
+        android:pathData="M42,26h24a6,6 0,0 1,6 6v44a6,6 0,0 1,-6 6h-24a6,6 0,0 1,-6 -6v-44a6,6 0,0 1,6 -6z" />
+    <path android:fillColor="#D93025"
+        android:pathData="M54,31m-5,0a5,5 0,1 1,10 0a5,5 0,1 1,-10 0" />
+    <path android:fillColor="#1A73E8"
+        android:pathData="M54,54m-9,0a9,9 0,1 1,18 0a9,9 0,1 1,-18 0" />
+    <path android:fillColor="#E8EAED"
+        android:pathData="M54,54m-3.5,0a3.5,3.5 0,1 1,7 0a3.5,3.5 0,1 1,-7 0" />
+    <path android:fillColor="#5F6368"
+        android:pathData="M45,69h6v4h-6zM57,69h6v4h-6z" />
+</vector>

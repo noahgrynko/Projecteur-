@@ -1,0 +1,25 @@
+# Gradle / Android Studio
+.gradle/
+.kotlin/
+build/
+/app/build/
+local.properties
+.idea/
+*.iml
+.DS_Store
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# Clés de signature : ne jamais les publier
+*.jks
+*.keystore
+keystore.properties
+
+# Firmware (PlatformIO / Arduino)
+.pio/
+firmware/**/build/
