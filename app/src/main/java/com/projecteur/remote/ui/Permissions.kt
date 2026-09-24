@@ -15,7 +15,12 @@ object Permissions {
             Manifest.permission.BLUETOOTH_ADVERTISE,
         ) else arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
 
-    fun hasBluetooth(context: Context) = bluetooth.all {
+    /**
+     * Recherche et connexion suffisent pour utiliser le Bluetooth ; BLUETOOTH_ADVERTISE ne sert
+     * qu'à rendre le téléphone visible et son refus ne doit pas bloquer le reste.
+     */
+    fun hasBluetooth(context: Context) = bluetooth.filterNot { it == Manifest.permission.BLUETOOTH_ADVERTISE }.all {
         ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
     }
+
 }

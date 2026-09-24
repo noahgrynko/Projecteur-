@@ -78,6 +78,14 @@ class BluetoothScanner(private val context: Context, private val scope: Coroutin
                     upsert(d, rssi)
                 }
                 BluetoothAdapter.ACTION_DISCOVERY_FINISHED -> Unit
+                // Mise à jour après « Associer » : fait apparaître « Connecter HID » sans relancer la recherche.
+                BluetoothDevice.ACTION_BOND_STATE_CHANGED -> {
+                    val d = intent.device() ?: return
+                    if (_devices.value.containsKey(d.address)) upsert(d, null)
+                    if (intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, -1) == BluetoothDevice.BOND_NONE &&
+                        intent.getIntExtra(BluetoothDevice.EXTRA_PREVIOUS_BOND_STATE, -1) == BluetoothDevice.BOND_BONDING
+                    ) _message.value = "Association refusée ou annulée (code/confirmation non validé sur l'un des appareils)."
+                }
                 BluetoothDevice.ACTION_UUID -> {
                     val d = intent.device() ?: return
                     @Suppress("DEPRECATION")
@@ -114,6 +122,7 @@ class BluetoothScanner(private val context: Context, private val scope: Coroutin
                 addAction(BluetoothDevice.ACTION_FOUND)
                 addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)
                 addAction(BluetoothDevice.ACTION_UUID)
+                addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED)
             }, ContextCompat.RECEIVER_EXPORTED)
             registered = true
         }
