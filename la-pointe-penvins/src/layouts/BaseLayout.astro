@@ -1,0 +1,166 @@
+---
+import '../styles/global.css';
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import MobileActions from '../components/MobileActions.astro';
+import { business, openingHours } from '../data/site';
+import { url, isIndexable } from '../data/url';
+import defaultOg from '../assets/photos/pointe-penvins-vue-aerienne.jpg';
+import serifFont from '../assets/fonts/instrument-serif-latin-400-normal.woff2?url';
+import sansFont from '../assets/fonts/hanken-grotesk-latin-wght-normal.woff2?url';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: ImageMetadata;
+  imageAlt?: string;
+  /** Header transparent superposé au visuel d'en-tête. */
+  overlayHeader?: boolean;
+  /** Fil d'Ariane pour les données structurées. */
+  breadcrumb?: { name: string; path: string }[];
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  image = defaultOg,
+  imageAlt = "Vue aérienne de la Pointe de Penvins à Sarzeau et de l'océan",
+  overlayHeader = true,
+  breadcrumb,
+  noindex = false,
+} = Astro.props;
+
+const site = Astro.site ?? new URL('https://www.lapointe-penvins.com');
+const canonical = new URL(Astro.url.pathname, site).href;
+const og = await getImage({ src: image, width: 1200, height: 630, fit: 'cover', format: 'jpg', quality: 78 });
+const ogUrl = new URL(og.src, site).href;
+const robots = noindex || !isIndexable ? 'noindex, nofollow' : 'index, follow, max-image-preview:large';
+
+const restaurantLd = {
+  '@context': 'https://schema.org',
+  '@type': ['Restaurant', 'BarOrPub'],
+  '@id': `${new URL(url(), site).href}#restaurant`,
+  name: business.name,
+  description: business.description,
+  url: new URL(url(), site).href,
+  image: ogUrl,
+  logo: new URL(url('icon-512.png'), site).href,
+  telephone: business.phoneIntl,
+  email: business.email,
+  foundingDate: business.founded,
+  servesCuisine: ['Fruits de mer', 'Cuisine bretonne', 'Produits locaux', 'Bio', 'Tapas', 'Burgers'],
+  acceptsReservations: business.links.booking,
+  hasMenu: new URL(url(business.menus.restaurant), site).href,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: business.address.street,
+    postalCode: business.address.postalCode,
+    addressLocality: business.address.city,
+    addressRegion: business.address.region,
+    addressCountry: business.address.country,
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: business.geo.lat, longitude: business.geo.lng },
+  hasMap: business.links.maps,
+  openingHoursSpecification: openingHours.map((d) => ({
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: `https://schema.org/${d.schema}`,
+    opens: d.open,
+    closes: d.close,
+  })),
+  sameAs: [business.links.facebook, business.links.instagram],
+};
+
+const breadcrumbLd = breadcrumb && {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [{ name: 'Accueil', path: '' }, ...breadcrumb].map((b, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: b.name,
+    item: new URL(url(b.path), site).href,
+  })),
+};
+---
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content={robots} />
+    <meta name="theme-color" content="#0e1a25" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="geo.region" content="FR-56" />
+    <meta name="geo.placename" content="Sarzeau" />
+    <meta name="geo.position" content={`${business.geo.lat};${business.geo.lng}`} />
+    <meta name="ICBM" content={`${business.geo.lat}, ${business.geo.lng}`} />
+    <!-- Vérifications Google Search Console reprises de l'ancien site -->
+    <meta name="google-site-verification" content="L8VqIKV4wmlS33Vja6z8lwlFkm3fykfB8orwcPkzNgo" />
+    <meta name="google-site-verification" content="MgY65sSHeWL_vu_xZPTfR1sz2i0fuocTtcZGFx5GB-E" />
+
+    <link rel="icon" href={url('favicon.svg')} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={url('apple-touch-icon.png')} />
+    <link rel="manifest" href={url('site.webmanifest')} />
+    <link rel="sitemap" href={url('sitemap-index.xml')} />
+
+    <link rel="preload" href={serifFont} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={sansFont} as="font" type="font/woff2" crossorigin />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content="La Pointe — Penvins, Sarzeau" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogUrl} />
+
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+    <script type="application/ld+json" set:html={JSON.stringify(restaurantLd)} />
+    {breadcrumbLd && <script type="application/ld+json" set:html={JSON.stringify(breadcrumbLd)} />}
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenu">Aller au contenu</a>
+    <Header overlay={overlayHeader} />
+    <main id="contenu" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+    <MobileActions />
+
+    <script>
+      // Apparitions au défilement, sobres et désactivées si « réduire les animations ».
+      const items = document.querySelectorAll<HTMLElement>('[data-reveal]');
+      if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                io.unobserve(entry.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+        );
+        items.forEach((el) => io.observe(el));
+      } else {
+        items.forEach((el) => el.classList.add('is-visible'));
+      }
+    </script>
+  </body>
+</html>

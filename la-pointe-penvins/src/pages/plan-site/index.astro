@@ -1,0 +1,18 @@
+---
+import LegalLayout from '../../layouts/LegalLayout.astro';
+import { navigation } from '../../data/site';
+import { url } from '../../data/url';
+---
+<LegalLayout
+  title="Plan du site — La Pointe, bar restaurant à Penvins, Sarzeau"
+  description="Plan du site de La Pointe, bar et restaurant vue mer à Penvins, Sarzeau, sur la Presqu'île de Rhuys."
+  heading="Plan du site"
+  path="plan-site/"
+>
+  <ul>
+    <li><a href={url()}>Accueil</a></li>
+    {navigation.map((item) => <li><a href={url(item.href)}>{item.label}</a></li>)}
+    <li><a href={url('mentions/')}>Mentions légales</a></li>
+    <li><a href={url('rgpd/')}>Politique de confidentialité</a></li>
+  </ul>
+</LegalLayout>

@@ -1,0 +1,48 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+/** Gabarit sobre pour les pages de texte (mentions, confidentialité, plan du site). */
+interface Props {
+  title: string;
+  description: string;
+  heading: string;
+  path: string;
+  updated?: string;
+}
+const { title, description, heading, path, updated } = Astro.props;
+---
+<BaseLayout title={title} description={description} overlayHeader={false} breadcrumb={[{ name: heading, path }]}>
+  <article class="legal">
+    <header class="legal__head">
+      <div class="container--narrow">
+        <p class="eyebrow">La Pointe · Penvins</p>
+        <h1>{heading}</h1>
+        {updated && <p class="legal__updated">Mise à jour : {updated}</p>}
+      </div>
+    </header>
+    <div class="container--narrow prose legal__body">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .legal__head {
+    padding-top: calc(var(--header-h) + clamp(3rem, 8vw, 6rem));
+    padding-bottom: clamp(2.5rem, 5vw, 4rem);
+    background: var(--sand);
+  }
+  .legal__head h1 {
+    margin-top: 1.25rem;
+    font-size: var(--step-4);
+  }
+  .legal__updated {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .legal__body {
+    padding-block: clamp(3rem, 6vw, 5rem) var(--section);
+    overflow-wrap: anywhere;
+  }
+</style>

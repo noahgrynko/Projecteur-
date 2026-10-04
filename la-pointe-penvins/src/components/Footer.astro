@@ -1,0 +1,218 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { business, navigation, openingHours, seasonInfo } from '../data/site';
+import { url } from '../data/url';
+
+const year = new Date().getFullYear();
+const weekdays = openingHours[0];
+const sunday = openingHours[6];
+const h = (t: string) => t.replace(':', 'h');
+---
+<footer class="site-footer on-dark">
+  <div class="container">
+    <div class="site-footer__top">
+      <p class="site-footer__statement display">
+        Au bout de la pointe,<br /><em>l'océan à 270°.</em>
+      </p>
+      <div class="site-footer__cta">
+        <a class="btn btn--light" href={business.links.booking} target="_blank" rel="noopener">
+          Réserver une table <Icon name="arrow" />
+        </a>
+        <a class="btn btn--ghost-light" href={`tel:${business.phoneIntl}`}>
+          <Icon name="phone" /> {business.phone}
+        </a>
+      </div>
+    </div>
+
+    <div class="site-footer__grid">
+      <div class="site-footer__brand">
+        <a href={url()} class="site-footer__logo"><Logo /></a>
+        <p>
+          Bar, restaurant & terrasse — club-house du Centre Nautique de Sarzeau, sur la Presqu'île de Rhuys,
+          depuis {business.founded}.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="site-footer__title">Nous trouver</h2>
+        <address>
+          {business.address.street}<br />
+          {business.address.postalCode} {business.address.city}<br />
+          {business.address.area}
+        </address>
+        <ul role="list" class="site-footer__links">
+          <li>
+            <a href={`tel:${business.phoneIntl}`}>{business.phone}</a>
+          </li>
+          <li>
+            <a href={`mailto:${business.email}`}>{business.email}</a>
+          </li>
+          <li>
+            <a href={business.links.maps} target="_blank" rel="noopener">Itinéraire Google Maps</a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="site-footer__title">Horaires</h2>
+        <p>
+          Lundi — samedi · {h(weekdays.open)} – {h(weekdays.close)}<br />
+          Dimanche · {h(sunday.open)} – {h(sunday.close)}
+        </p>
+        <p class="site-footer__small">{seasonInfo.join(' ')}</p>
+        <a class="site-footer__small" href={business.links.google} target="_blank" rel="noopener">
+          Horaires du jour sur Google
+        </a>
+      </div>
+
+      <nav aria-label="Pied de page">
+        <h2 class="site-footer__title">Explorer</h2>
+        <ul role="list" class="site-footer__links">
+          {
+            navigation.map((item) => (
+              <li>
+                <a href={url(item.href)}>{item.label}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+
+    <div class="site-footer__bottom">
+      <ul role="list" class="site-footer__social">
+        <li>
+          <a href={business.links.instagram} target="_blank" rel="noopener" aria-label="Instagram (nouvel onglet)">
+            <Icon name="instagram" size={20} />
+          </a>
+        </li>
+        <li>
+          <a href={business.links.facebook} target="_blank" rel="noopener" aria-label="Facebook (nouvel onglet)">
+            <Icon name="facebook" size={20} />
+          </a>
+        </li>
+      </ul>
+      <p>© {year} {business.legalName} · Photos protégées, reproduction interdite.</p>
+      <ul role="list" class="site-footer__legal">
+        <li><a href={url('mentions/')}>Mentions légales</a></li>
+        <li><a href={url('rgpd/')}>Confidentialité</a></li>
+        <li><a href={url('plan-site/')}>Plan du site</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--ink);
+    color: rgb(247 243 236 / 0.78);
+    padding-top: clamp(4rem, 8vw, 7rem);
+    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+    font-size: 0.95rem;
+  }
+  .site-footer a {
+    text-decoration: none;
+    transition: color 0.3s var(--ease);
+  }
+  .site-footer a:hover {
+    color: var(--copper-light);
+  }
+  .site-footer__top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+    border-bottom: 1px solid var(--line-light);
+  }
+  .site-footer__statement {
+    font-size: var(--step-4);
+    color: var(--foam);
+  }
+  .site-footer__statement em {
+    color: var(--copper-light);
+  }
+  .site-footer__cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .site-footer__grid {
+    display: grid;
+    gap: 2.5rem;
+    padding-block: clamp(3rem, 6vw, 4.5rem);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+  }
+  .site-footer__brand {
+    display: grid;
+    gap: 1.25rem;
+    align-content: start;
+    max-width: 22rem;
+  }
+  .site-footer__logo {
+    color: var(--foam);
+  }
+  .site-footer__title {
+    margin-bottom: 1rem;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--copper-light);
+  }
+  address {
+    font-style: normal;
+    margin-bottom: 1rem;
+  }
+  .site-footer__links {
+    display: grid;
+    gap: 0.45rem;
+  }
+  .site-footer__small {
+    display: inline-block;
+    margin-top: 0.75rem;
+    font-size: 0.82rem;
+    color: rgb(247 243 236 / 0.62);
+  }
+  a.site-footer__small {
+    text-decoration: underline;
+  }
+  .site-footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line-light);
+    font-size: 0.8rem;
+    color: rgb(247 243 236 / 0.62);
+  }
+  .site-footer__social,
+  .site-footer__legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+  }
+  .site-footer__social a {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid var(--line-light);
+    border-radius: 50%;
+    color: var(--foam);
+  }
+  .site-footer__social {
+    gap: 0.6rem;
+  }
+  @media (max-width: 47.99em) {
+    .site-footer {
+      /* réserve la place de la barre d'actions mobile */
+      padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+    }
+  }
+</style>

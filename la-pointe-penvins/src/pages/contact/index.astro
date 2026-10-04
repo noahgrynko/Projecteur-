@@ -1,0 +1,307 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import SectionTitle from '../../components/SectionTitle.astro';
+import Icon from '../../components/Icon.astro';
+import Hours from '../../components/Hours.astro';
+import MapEmbed from '../../components/MapEmbed.astro';
+import { business } from '../../data/site';
+import { url } from '../../data/url';
+
+import hero from '../../assets/photos/ilot-penvins.jpg';
+---
+<BaseLayout
+  title="Contact & accès — La Pointe, restaurant à Sarzeau Penvins vue mer"
+  description="Contactez La Pointe, bar restaurant à Penvins (Sarzeau) sur la Presqu'île de Rhuys : téléphone, email, adresse, horaires et itinéraire. Réservation en ligne ou par téléphone."
+  image={hero}
+  imageAlt="Vue aérienne de l'îlot et de la pointe de Penvins"
+  breadcrumb={[{ name: 'Contact', path: 'contact/' }]}
+>
+  <PageHero
+    eyebrow="Contact & accès"
+    title="Rendez-vous <em>au bout de la pointe</em>"
+    image={hero}
+    alt="Vue aérienne de la pointe de Penvins, de son îlot rocheux et des eaux claires"
+  >
+    <p>{business.address.street}, {business.address.postalCode} {business.address.city} — {business.address.area}</p>
+  </PageHero>
+
+  <section class="section">
+    <div class="container contact">
+      <div class="contact__info">
+        <SectionTitle eyebrow="Nous joindre" title="Une question, <em>une envie ?</em>">
+          <p>
+            Nous ne prenons pas de réservation via le formulaire. Réservez directement en ligne, via notre fiche Google,
+            Instagram ou Facebook, ou par téléphone — idéalement en dehors des heures de service.
+          </p>
+        </SectionTitle>
+
+        <ul role="list" class="channels" data-reveal>
+          <li>
+            <a href={business.links.booking} target="_blank" rel="noopener">
+              <Icon name="calendar" />
+              <span><small>Réservation en ligne</small>Réserver une table</span>
+              <Icon name="arrow" class="channels__arrow" />
+            </a>
+          </li>
+          <li>
+            <a href={`tel:${business.phoneIntl}`}>
+              <Icon name="phone" />
+              <span><small>Téléphone</small>{business.phone}</span>
+              <Icon name="arrow" class="channels__arrow" />
+            </a>
+          </li>
+          <li>
+            <a href={`mailto:${business.email}`}>
+              <Icon name="mail" />
+              <span><small>Groupes, évènements & demandes</small>{business.email}</span>
+              <Icon name="arrow" class="channels__arrow" />
+            </a>
+          </li>
+          <li>
+            <a href={business.links.maps} target="_blank" rel="noopener">
+              <Icon name="pin" />
+              <span>
+                <small>Itinéraire</small>{business.address.street}, {business.address.postalCode}
+                {business.address.city}
+              </span>
+              <Icon name="arrow" class="channels__arrow" />
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="contact__form-wrap" data-reveal>
+        <h2 class="contact__form-title">Écrivez-nous</h2>
+        <form class="form" data-contact-form novalidate>
+          <div class="form__row">
+            <div class="field">
+              <label for="nom">Nom <span aria-hidden="true">*</span></label>
+              <input id="nom" name="nom" type="text" autocomplete="family-name" required />
+            </div>
+            <div class="field">
+              <label for="prenom">Prénom <span aria-hidden="true">*</span></label>
+              <input id="prenom" name="prenom" type="text" autocomplete="given-name" required />
+            </div>
+          </div>
+          <div class="form__row">
+            <div class="field">
+              <label for="email">Email <span aria-hidden="true">*</span></label>
+              <input id="email" name="email" type="email" autocomplete="email" required />
+            </div>
+            <div class="field">
+              <label for="tel">Téléphone</label>
+              <input id="tel" name="tel" type="tel" autocomplete="tel" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="sujet">Objet</label>
+            <select id="sujet" name="sujet">
+              <option>Demande d'information</option>
+              <option>Groupe ou évènement privé</option>
+              <option>Évènement professionnel</option>
+              <option>Autre</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="message">Votre message <span aria-hidden="true">*</span></label>
+            <textarea id="message" name="message" rows="6" required></textarea>
+          </div>
+          <p class="form__legal">
+            Les champs marqués d'un astérisque (*) sont obligatoires. L'envoi ouvre votre messagerie avec le message
+            pré-rempli : aucune donnée n'est stockée sur ce site. Vos informations servent uniquement à vous répondre —
+            voir notre <a href={url('rgpd/')}>politique de confidentialité</a>.
+          </p>
+          <p class="form__error" role="alert" data-form-error></p>
+          <button type="submit" class="btn">Envoyer le message <Icon name="arrow" /></button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--sand" aria-labelledby="acces-titre">
+    <div class="container access">
+      <div>
+        <SectionTitle id="acces-titre" eyebrow="Accès & horaires" title="Venir <em>à La Pointe</em>">
+          <p>
+            Au bout de la route de la Chapelle, à Penvins, sur la commune de Sarzeau. Suivez la direction de la chapelle
+            et du Centre Nautique.
+          </p>
+        </SectionTitle>
+        <div class="access__hours" data-reveal><Hours /></div>
+      </div>
+      <div data-reveal><MapEmbed /></div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact {
+    display: grid;
+    gap: clamp(3rem, 6vw, 6rem);
+  }
+  .contact__info {
+    display: grid;
+    gap: 2.5rem;
+    align-content: start;
+  }
+  .channels {
+    border-top: 1px solid var(--line);
+  }
+  .channels a {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1.25rem;
+    padding-block: 1.25rem;
+    border-bottom: 1px solid var(--line);
+    font-size: var(--step-1);
+    text-decoration: none;
+    overflow-wrap: anywhere;
+    transition: color 0.3s var(--ease);
+  }
+  .channels a:hover {
+    color: var(--copper-text);
+  }
+  .channels a > :global(svg:first-child) {
+    color: var(--copper);
+  }
+  .channels small {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .channels :global(.channels__arrow) {
+    width: 1.1rem;
+    transition: transform 0.4s var(--ease-out);
+  }
+  .channels a:hover :global(.channels__arrow) {
+    transform: translateX(4px);
+  }
+
+  .contact__form-wrap {
+    padding: clamp(1.5rem, 4vw, 3.5rem);
+    background: var(--foam-2);
+    border: 1px solid var(--line);
+  }
+  .contact__form-title {
+    font-size: var(--step-3);
+    margin-bottom: 2rem;
+  }
+  .form {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .form__row {
+    display: grid;
+    gap: 1.5rem;
+  }
+  @media (min-width: 40em) {
+    .form__row {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .field {
+    display: grid;
+    gap: 0.5rem;
+  }
+  .field label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .field input,
+  .field textarea,
+  .field select {
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.75rem 0;
+    border: 0;
+    border-bottom: 1px solid rgb(14 26 37 / 0.35);
+    border-radius: 0;
+    background: transparent;
+    font-size: 1rem;
+    transition: border-color 0.3s var(--ease);
+  }
+  .field textarea {
+    resize: vertical;
+  }
+  .field input:focus,
+  .field textarea:focus,
+  .field select:focus {
+    outline: none;
+    border-bottom-color: var(--copper);
+    box-shadow: 0 1px 0 var(--copper);
+  }
+  .field [aria-invalid='true'] {
+    border-bottom-color: #a3361f;
+  }
+  .form__legal {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  .form__legal a {
+    color: inherit;
+  }
+  .form__error {
+    color: #a3361f;
+    font-size: 0.9rem;
+  }
+  .form__error:empty {
+    display: none;
+  }
+  .form .btn {
+    justify-self: start;
+  }
+  @media (min-width: 64em) {
+    .contact {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .access {
+    display: grid;
+    gap: clamp(3rem, 6vw, 6rem);
+    align-items: start;
+  }
+  .access__hours {
+    margin-top: 2.5rem;
+  }
+  @media (min-width: 64em) {
+    .access {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>
+
+<script define:vars={{ email: business.email }}>
+  // Formulaire sans serveur : validation accessible puis ouverture de la messagerie.
+  const form = document.querySelector('[data-contact-form]');
+  const error = document.querySelector('[data-form-error]');
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const fields = [...form.querySelectorAll('input, textarea')];
+    let firstInvalid = null;
+    fields.forEach((field) => {
+      const invalid = !field.checkValidity();
+      field.setAttribute('aria-invalid', String(invalid));
+      if (invalid && !firstInvalid) firstInvalid = field;
+    });
+    if (firstInvalid) {
+      error.textContent = 'Merci de compléter les champs obligatoires avec une adresse email valide.';
+      firstInvalid.focus();
+      return;
+    }
+    error.textContent = '';
+    const data = new FormData(form);
+    const lines = [`Nom : ${data.get('prenom')} ${data.get('nom')}`, `Email : ${data.get('email')}`];
+    if (data.get('tel')) lines.push(`Téléphone : ${data.get('tel')}`);
+    const body = [...lines, '', String(data.get('message'))].join('\n');
+    const subject = `[Site] ${data.get('sujet')}`;
+    window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  });
+</script>

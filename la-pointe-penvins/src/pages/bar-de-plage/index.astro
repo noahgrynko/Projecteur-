@@ -1,0 +1,228 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import SectionTitle from '../../components/SectionTitle.astro';
+import Photo from '../../components/Photo.astro';
+import Icon from '../../components/Icon.astro';
+import Hours from '../../components/Hours.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { business } from '../../data/site';
+import { url } from '../../data/url';
+
+import hero from '../../assets/photos/terrasse-panorama.jpg';
+import cocktail from '../../assets/photos/cocktail-passion.jpg';
+import biere from '../../assets/photos/biere-bar.jpg';
+import salon from '../../assets/photos/salon-terrasse.jpg';
+import parasol from '../../assets/photos/parasol-dunes.jpg';
+import soir from '../../assets/photos/terrasse-soir.jpg';
+import service from '../../assets/photos/service-terrasse.jpg';
+import cta from '../../assets/photos/coucher-soleil-dunes.jpg';
+
+const moments = [
+  {
+    time: '11h',
+    title: 'Le café face au large',
+    text: 'Premier café en terrasse, retour de session ou pause vélo : la journée commence au rythme des marées.',
+  },
+  {
+    time: '17h',
+    title: "L'apéritif iodé",
+    text: 'Huîtres, planches à partager et verre de blanc frais : l’heure parfaite pour ralentir entre amis.',
+  },
+  {
+    time: '20h',
+    title: 'Cocktails au couchant',
+    text: 'Le ciel s’embrase, les guirlandes s’allument : place aux cocktails maison et aux longues conversations.',
+  },
+];
+---
+<BaseLayout
+  title="Bar vue mer à Penvins, Sarzeau — La Pointe · Golfe du Morbihan"
+  description="Le bar de La Pointe à Penvins, près de Sarzeau : cocktails, huîtres et apéritifs sur une terrasse avec vue mer à 270° et couchers de soleil, près de Vannes et du Golfe du Morbihan."
+  image={hero}
+  imageAlt="Terrasse du bar La Pointe et ses parasols au coucher du soleil"
+  breadcrumb={[{ name: 'Le bar', path: 'bar-de-plage/' }]}
+>
+  <PageHero
+    eyebrow="Le bar · Penvins, Sarzeau"
+    title="Un verre, <em>l'horizon à 270°</em>"
+    image={hero}
+    alt="La terrasse du bar La Pointe et ses parasols au-dessus des dunes, dans la lumière du soir"
+  >
+    <p>
+      Une ambiance chaleureuse, un cadre unique et toute la mer devant vous : l'endroit idéal pour faire une pause et se
+      déconnecter.
+    </p>
+  </PageHero>
+
+  <section class="section">
+    <div class="container split">
+      <div class="split__text">
+        <SectionTitle eyebrow="L'esprit du lieu" title="Le bar de plage <em>de la presqu'île</em>">
+          <p>
+            Vous cherchez un bar sympa, à l'ambiance détendue, dans un cadre hors du commun ? Ouvert en continu dès 11h,
+            le bar de La Pointe vous accueille en terrasse ou à l'abri de la véranda, pour un café, une bière fraîche ou
+            un cocktail face à l'océan.
+          </p>
+        </SectionTitle>
+        <div class="split__actions" data-reveal>
+          <a class="btn" href={url(business.menus.bar)} target="_blank" rel="noopener">
+            Carte du bar & huîtres <Icon name="download" />
+          </a>
+        </div>
+        <p class="split__note" data-reveal>Carte au format PDF — mise à jour selon la saison.</p>
+      </div>
+      <div class="trio" data-reveal="fade">
+        <div class="media trio__a">
+          <Photo src={cocktail} alt="Cocktail crémeux à la passion, garni d'un physalis" sizes="(min-width: 64em) 28vw, 60vw" />
+        </div>
+        <div class="media trio__b">
+          <Photo src={biere} alt="Le barman sert une bière pression au comptoir" sizes="(min-width: 64em) 18vw, 40vw" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--ink" aria-labelledby="moments-titre">
+    <div class="container">
+      <SectionTitle id="moments-titre" eyebrow="Au fil de la journée" title="Trois moments <em>à savourer</em>" />
+      <ol role="list" class="moments">
+        {
+          moments.map((m, i) => (
+            <li data-reveal style={`--reveal-delay:${i * 0.12}s`}>
+              <span class="moments__time">{m.time}</span>
+              <h3>{m.title}</h3>
+              <p>{m.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" aria-label="Ambiance de la terrasse">
+    <div class="container strip">
+      <div class="media strip__a" data-reveal="fade">
+        <Photo src={salon} alt="Salon extérieur et coussins bleus sur la terrasse au crépuscule" sizes="(min-width: 48em) 34vw, 100vw" />
+      </div>
+      <div class="media strip__b" data-reveal="fade" style="--reveal-delay:0.1s">
+        <Photo src={parasol} alt="Clients sous un parasol au milieu des fleurs des dunes" sizes="(min-width: 48em) 30vw, 50vw" />
+      </div>
+      <div class="media strip__c" data-reveal="fade" style="--reveal-delay:0.2s">
+        <Photo src={soir} alt="Terrasse de La Pointe à la tombée de la nuit" sizes="(min-width: 48em) 30vw, 50vw" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--sand" aria-labelledby="horaires-bar">
+    <div class="container split">
+      <div class="split__text">
+        <SectionTitle id="horaires-bar" eyebrow="Horaires du bar" title="Ouvert en continu <em>dès 11h</em>">
+          <p>
+            Hors vacances scolaires, les jours d'ouverture peuvent être réduits : vérifiez notre fiche Google avant de
+            venir.
+          </p>
+        </SectionTitle>
+        <div class="media service" data-reveal="fade">
+          <Photo src={service} alt="Service de boissons à une tablée en terrasse, en plein soleil" sizes="(min-width: 64em) 40vw, 100vw" />
+        </div>
+      </div>
+      <div data-reveal>
+        <Hours />
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    image={cta}
+    alt="Soleil couchant sur la mer, derrière les herbes des dunes de Penvins"
+    eyebrow="Ce soir ?"
+    title="Le coucher de soleil <em>est déjà réservé.</em> Votre table aussi ?"
+  />
+</BaseLayout>
+
+<style>
+  .trio {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 1rem;
+    align-items: start;
+  }
+  .trio__a {
+    aspect-ratio: 4 / 5;
+  }
+  .trio__b {
+    aspect-ratio: 2 / 3;
+    margin-top: 5rem;
+  }
+
+  .moments {
+    display: grid;
+    gap: 1px;
+    margin-top: clamp(3rem, 6vw, 5rem);
+    background: var(--line-light);
+    border-block: 1px solid var(--line-light);
+  }
+  .moments li {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+    padding: 2.5rem 0;
+    background: var(--ink);
+  }
+  .moments__time {
+    font-family: var(--font-display);
+    font-size: var(--step-5);
+    line-height: 1;
+    color: var(--copper-light);
+  }
+  .moments h3 {
+    font-size: var(--step-2);
+  }
+  .moments p {
+    color: rgb(247 243 236 / 0.72);
+    max-width: 24rem;
+  }
+  @media (min-width: 48em) {
+    .moments {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .moments li {
+      padding: 3rem 2rem;
+    }
+    .moments li:first-child {
+      padding-left: 0;
+    }
+  }
+
+  .strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(0.5rem, 1vw, 1rem);
+  }
+  .strip__a {
+    grid-column: span 2;
+    aspect-ratio: 16 / 10;
+  }
+  .strip__b,
+  .strip__c {
+    aspect-ratio: 3 / 4;
+  }
+  @media (min-width: 48em) {
+    .strip {
+      grid-template-columns: 1.2fr 1fr 1fr;
+      align-items: end;
+    }
+    .strip__a {
+      grid-column: auto;
+      aspect-ratio: 4 / 5;
+    }
+    .strip__c {
+      margin-bottom: 4rem;
+    }
+  }
+  .service {
+    aspect-ratio: 16 / 10;
+  }
+</style>

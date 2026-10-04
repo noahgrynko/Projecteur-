@@ -1,0 +1,313 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import SectionTitle from '../../components/SectionTitle.astro';
+import Photo from '../../components/Photo.astro';
+import Icon from '../../components/Icon.astro';
+import Hours from '../../components/Hours.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { business } from '../../data/site';
+import { url } from '../../data/url';
+
+import hero from '../../assets/photos/salle-veranda.jpg';
+import assiette from '../../assets/photos/assiette-poisson.jpg';
+import huitres from '../../assets/photos/huitres.jpg';
+import passe from '../../assets/photos/passe-cuisine.jpg';
+import parasols from '../../assets/photos/terrasse-ciel-bleu.jpg';
+import groupe from '../../assets/photos/terrasse-convives.jpg';
+import cta from '../../assets/photos/coucher-soleil.jpg';
+
+const menu = [
+  { title: 'Godailles & ripailles', text: 'Planches de fromages et de charcuteries bretonnes, chiffonnade, œufs bio — à partager à l’apéritif.' },
+  { title: 'Les iodés', text: 'Huîtres du Morbihan, tartare d’algues bio de Roscoff, saumon fumé artisanal d’Arzon, bulots et rillettes de la mer.' },
+  { title: 'Bord de mer', text: 'Poisson du moment selon la marée, assiette de la mer, fish & chips et tartare de thon.' },
+  { title: 'Viandes & burgers', text: 'Carbonnade bretonne, tartare au couteau, filet mignon et burgers généreux au pain de boulangerie locale.' },
+  { title: 'Grandes salades', text: 'Des assiettes fraîches et colorées, au fil des légumes bio de la ferme maraîchère voisine.' },
+  { title: 'Douceurs', text: 'Far breton, crêpes de la Fontaine Saint-Père, glaces artisanales et desserts du jour.' },
+];
+
+const producers = [
+  { name: 'Bord à Bord', place: 'Roscoff (29)', what: 'Tartare d’algues bio' },
+  { name: 'Fumage artisanal d’Arzon', place: 'Sarzeau (56)', what: 'Saumon fumé' },
+  { name: 'Furic Marée', place: 'Le Guilvinec (29)', what: 'Poissons et crustacés' },
+  { name: 'Emmanuel Bastille', place: 'Le Tour-du-Parc (56)', what: 'Huîtres' },
+  { name: 'Rebom', place: 'Sarzeau (56)', what: 'Ferme maraîchère bio' },
+  { name: 'Boulangerie Maquignon', place: 'Sarzeau (56)', what: 'Pain tradition' },
+  { name: 'Boulangerie des Îles', place: 'Sarzeau (56)', what: 'Pain petit épeautre bio' },
+  { name: 'Ferme de Bellevue', place: 'Sarzeau (56)', what: 'Fromage du moment' },
+  { name: 'Saveurs de Rhuys', place: 'Sarzeau (56)', what: 'Charcuteries' },
+  { name: 'Bergerie Breizh Lacaune', place: 'Plonévez-du-Faou (29)', what: 'Tomme de brebis' },
+  { name: 'Askel', place: 'Quimper (29)', what: 'Fromages bretons' },
+  { name: 'Laiterie du Grand Clos', place: 'Pontchâteau (44)', what: 'Œufs bio' },
+  { name: 'Crêperie de la Fontaine Saint-Père', place: 'Plessala (22)', what: 'Crêpes' },
+  { name: 'Éric Élien', place: 'Trégueux (22)', what: 'Glaces' },
+  { name: 'Biscuiterie des Vénètes', place: 'Saint-Armel (56)', what: 'Sablé breton' },
+];
+---
+<BaseLayout
+  title="Restaurant vue mer à Penvins, Sarzeau — La Pointe · Presqu'île de Rhuys"
+  description="Le restaurant de La Pointe, face à la mer à Penvins (Sarzeau) : huîtres du Morbihan, poisson du moment, planches, burgers, produits frais, locaux et bio. Groupes, EVJF, EVG et anniversaires sur-mesure."
+  image={hero}
+  imageAlt="Salle du restaurant La Pointe ouverte sur la mer"
+  breadcrumb={[{ name: 'Le restaurant', path: 'restaurant-sur-la-plage/' }]}
+>
+  <PageHero
+    eyebrow="Le restaurant · Penvins, Sarzeau (56)"
+    title="Une cuisine de passionnés, <em>servie face à la mer</em>"
+    image={hero}
+    alt="Salle couverte du restaurant La Pointe, tables en bois et grandes baies ouvertes sur la terrasse et la mer"
+  >
+    <p>
+      Produits frais, locaux et bio, cuisinés par une équipe passionnée de food culture et de glisse, sur l'un des plus
+      beaux spots du Golfe du Morbihan.
+    </p>
+  </PageHero>
+
+  <section class="section">
+    <div class="container split">
+      <div class="split__text">
+        <SectionTitle eyebrow="Notre cuisine" title="Le goût du <em>littoral</em>">
+          <p>
+            Notre restaurant est installé sur la pointe de Penvins, face à la mer et aux plus beaux couchers de soleil.
+            Ici, la carte suit les saisons, la marée et les arrivages de nos producteurs voisins.
+          </p>
+        </SectionTitle>
+        <div class="split__actions" data-reveal>
+          <a class="btn" href={url(business.menus.restaurant)} target="_blank" rel="noopener">
+            Consulter la carte <Icon name="download" />
+          </a>
+          <a class="btn btn--ghost" href={business.links.booking} target="_blank" rel="noopener">Réserver</a>
+        </div>
+        <p class="split__note" data-reveal>Carte au format PDF — elle évolue au fil des saisons.</p>
+      </div>
+      <div class="duo" data-reveal="fade">
+        <div class="media duo__a">
+          <Photo src={assiette} alt="Filet de poisson sur crème de betterave et jeunes pousses" sizes="(min-width: 64em) 26vw, 50vw" />
+        </div>
+        <div class="media duo__b">
+          <Photo src={huitres} alt="Huîtres du Morbihan au citron, servies face à la mer" sizes="(min-width: 64em) 22vw, 45vw" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--sand" aria-labelledby="carte-titre">
+    <div class="container">
+      <SectionTitle id="carte-titre" eyebrow="À la carte" title="Ce qui vous attend <em>à table</em>" />
+      <ol role="list" class="menu-list">
+        {
+          menu.map((m, i) => (
+            <li data-reveal style={`--reveal-delay:${(i % 3) * 0.08}s`}>
+              <span class="menu-list__num">0{i + 1}</span>
+              <h3>{m.title}</h3>
+              <p>{m.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="menu-note" data-reveal>
+        Aperçu indicatif : la carte change selon les saisons et les arrivages.
+        <a href={url(business.menus.restaurant)} target="_blank" rel="noopener">Voir la carte complète et les prix</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="producteurs-titre">
+    <div class="container producers">
+      <div class="producers__aside">
+        <SectionTitle id="producteurs-titre" eyebrow="Circuit court" title="Nos <em>producteurs</em>">
+          <p>
+            Quinze artisans, maraîchers, ostréiculteurs et pêcheurs — la plupart à quelques kilomètres de la terrasse.
+            C'est à eux que nous devons le goût de nos assiettes.
+          </p>
+        </SectionTitle>
+        <div class="media producers__img" data-reveal="fade">
+          <Photo src={passe} alt="Passe de la cuisine : les plats sont dressés et transmis en salle" sizes="(min-width: 64em) 32vw, 100vw" />
+        </div>
+      </div>
+      <ul role="list" class="producers__list">
+        {
+          producers.map((p) => (
+            <li data-reveal>
+              <span class="producers__name">{p.name}</span>
+              <span class="producers__what">{p.what}</span>
+              <span class="producers__place">{p.place}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--ink" aria-labelledby="groupes-titre">
+    <div class="container split">
+      <div class="media groups__img" data-reveal="fade">
+        <Photo src={groupe} alt="Un serveur apporte des boissons à une tablée d'amis sur la terrasse" sizes="(min-width: 64em) 45vw, 100vw" />
+      </div>
+      <div class="split__text">
+        <SectionTitle id="groupes-titre" eyebrow="Groupes & évènements" title="Vos grands moments, <em>avec vue sur mer</em>">
+          <p>
+            EVJF, EVG, anniversaires, repas de famille ou d'entreprise : La Pointe est le lieu idéal pour vos
+            évènements. Pour les groupes à partir de 15 personnes, nous imaginons avec vous des formules spéciales et
+            sur-mesure.
+          </p>
+        </SectionTitle>
+        <div class="split__actions" data-reveal>
+          <a class="btn btn--light" href={`mailto:${business.email}?subject=Demande%20pour%20un%20groupe`}>
+            Nous écrire <Icon name="mail" />
+          </a>
+          <a class="btn btn--ghost-light" href={`tel:${business.phoneIntl}`}>
+            <Icon name="phone" /> {business.phone}
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="horaires-titre">
+    <div class="container split">
+      <div>
+        <SectionTitle id="horaires-titre" eyebrow="Horaires" title="Quand venir <em>déjeuner ou dîner</em>">
+          <p>
+            Service du midi jusqu'à 14h30, service du soir jusqu'à 22h. Pensez à réserver, surtout les week-ends et
+            pendant les vacances.
+          </p>
+        </SectionTitle>
+        <div class="media hours-img" data-reveal="fade">
+          <Photo src={parasols} alt="Parasols et banquettes de la terrasse sous un ciel bleu, face à la mer" sizes="(min-width: 64em) 40vw, 100vw" />
+        </div>
+      </div>
+      <div data-reveal>
+        <Hours />
+      </div>
+    </div>
+  </section>
+
+  <CtaBand image={cta} alt="Coucher de soleil rouge sur la mer, vu depuis les dunes de Penvins" />
+</BaseLayout>
+
+<style>
+
+  .duo {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 0.8fr;
+    gap: 1rem;
+    align-items: end;
+  }
+  .duo__a {
+    aspect-ratio: 4 / 5;
+  }
+  .duo__b {
+    aspect-ratio: 3 / 4;
+    margin-bottom: -3rem;
+  }
+
+  .menu-list {
+    display: grid;
+    margin-top: clamp(3rem, 5vw, 4rem);
+    border-top: 1px solid var(--line);
+  }
+  .menu-list li {
+    display: grid;
+    gap: 0.6rem;
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .menu-list__num {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: var(--copper-text);
+  }
+  .menu-list h3 {
+    font-size: var(--step-2);
+  }
+  .menu-list p {
+    color: var(--muted);
+    max-width: 30rem;
+  }
+  @media (min-width: 48em) {
+    .menu-list {
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 3rem;
+    }
+  }
+  @media (min-width: 64em) {
+    .menu-list {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .menu-note {
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .menu-note a {
+    color: var(--copper-text);
+  }
+
+  .producers {
+    display: grid;
+    gap: clamp(3rem, 6vw, 6rem);
+  }
+  .producers__aside {
+    display: grid;
+    gap: 2.5rem;
+    align-content: start;
+  }
+  .producers__img {
+    aspect-ratio: 4 / 5;
+    max-width: 30rem;
+  }
+  .producers__list {
+    border-top: 1px solid var(--line);
+  }
+  .producers__list li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.15rem 1.5rem;
+    padding-block: 1.1rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .producers__name {
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    line-height: 1.2;
+  }
+  .producers__what {
+    grid-column: 1;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .producers__place {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--copper-text);
+    text-align: right;
+  }
+  @media (min-width: 64em) {
+    .producers {
+      grid-template-columns: 0.9fr 1.1fr;
+    }
+    .producers__aside {
+      position: sticky;
+      top: calc(var(--header-h) + 2rem);
+      align-self: start;
+    }
+  }
+
+  .groups__img {
+    aspect-ratio: 4 / 5;
+    max-height: 44rem;
+  }
+  .hours-img {
+    margin-top: 2.5rem;
+    aspect-ratio: 4 / 3;
+  }
+</style>

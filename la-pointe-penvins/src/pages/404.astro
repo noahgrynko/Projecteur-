@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Photo from '../components/Photo.astro';
+import Icon from '../components/Icon.astro';
+import { url } from '../data/url';
+import image from '../assets/photos/chapelle-tempete.jpg';
+---
+<BaseLayout title="Page introuvable — La Pointe" description="Cette page n'existe pas ou a été déplacée." noindex>
+  <section class="nf on-dark">
+    <div class="nf__media media">
+      <Photo src={image} alt="La chapelle de Penvins dans la brume d'un jour de tempête" priority />
+    </div>
+    <div class="container nf__content">
+      <p class="eyebrow">Erreur 404</p>
+      <h1>Vous avez dérivé <em>un peu loin.</em></h1>
+      <p class="lead">La page que vous cherchez n'existe pas ou a été déplacée.</p>
+      <a class="btn btn--light" href={url()}>Retour au port <Icon name="arrow" /></a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf {
+    position: relative;
+    display: grid;
+    align-items: center;
+    min-height: 100svh;
+    color: var(--foam);
+    isolation: isolate;
+  }
+  .nf__media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  .nf__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgb(8 16 24 / 0.6);
+  }
+  .nf__content {
+    display: grid;
+    gap: 1.5rem;
+    justify-items: start;
+    padding-top: var(--header-h);
+  }
+  h1 {
+    font-size: var(--step-5);
+    max-width: 12ch;
+  }
+  h1 em {
+    color: var(--copper-light);
+  }
+</style>

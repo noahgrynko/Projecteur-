@@ -1,0 +1,203 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import SectionTitle from '../../components/SectionTitle.astro';
+import Photo from '../../components/Photo.astro';
+import Icon from '../../components/Icon.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { url } from '../../data/url';
+
+import hero from '../../assets/photos/chapelle-dunes.jpg';
+import alban from '../../assets/photos/alban-morel.jpg';
+import aerial from '../../assets/photos/presquile-drone.jpg';
+import chapelleCiel from '../../assets/photos/chapelle-vue-ciel.jpg';
+import kite from '../../assets/photos/kitesurf.jpg';
+import cta from '../../assets/photos/restaurant-crepuscule.jpg';
+
+const timeline = [
+  {
+    year: 'Années 70',
+    title: 'Les premiers bords',
+    text: "Yannick Morel, le grand-père, lance les activités nautiques à Penvins avec d'autres passionnés de voile, dont Guy Toureau, pour faire découvrir les îles Dumet et Houat en goélette. À l'époque, la pointe ne compte guère que des blockhaus.",
+  },
+  {
+    year: '15 saisons',
+    title: 'La base nautique grandit',
+    text: "Olivier Morel, l'oncle, développe les activités nautiques avec énergie et dévouement pendant quinze ans. Lui succèdent Loïc Peron, Arnaud, Vincent puis Gildas Orève à la tête de la base.",
+  },
+  {
+    year: '2013',
+    title: 'Le Centre Nautique de Sarzeau',
+    text: "Le CNS passe en délégation de service public. L'espace qu'occupe aujourd'hui le restaurant sert alors de salle de réunion et de cafétéria pour l'école de voile et les élus locaux.",
+  },
+  {
+    year: '10 juillet 2015',
+    title: 'La Pointe est inaugurée',
+    text: "À la demande de Pierre-Yves Gouesin (Loisirs Développement Service) et en concertation avec la municipalité, les acteurs nautiques, les associations et les riverains, Alban et Ralph Morel créent le club-house du CNS : La Pointe.",
+  },
+];
+---
+<BaseLayout
+  title="Notre histoire — La Pointe, bar restaurant vue mer à Penvins, Sarzeau"
+  description="Le bar restaurant avec vue sur mer à Penvins, près de Sarzeau : l'histoire d'une famille de marins et du club-house du Centre Nautique de Sarzeau, sur la Presqu'île de Rhuys. Réservez votre table."
+  image={hero}
+  imageAlt="La chapelle de Penvins au milieu des dunes"
+  breadcrumb={[{ name: "L'histoire", path: 'a-propos/' }]}
+>
+  <PageHero
+    eyebrow="Notre histoire"
+    title="Penvins et son littoral, <em>une histoire de famille</em>"
+    image={hero}
+    alt="La chapelle de Penvins au loin, derrière les oyats des dunes, sous un ciel bleu"
+    position="50% 70%"
+  >
+    <p>Un bar et restaurant au cœur de la Presqu'île de Rhuys, né de trois générations de passion pour la mer.</p>
+  </PageHero>
+
+  <section class="section">
+    <div class="container portrait">
+      <div class="media portrait__img" data-reveal="fade">
+        <Photo src={alban} alt="Portrait d'Alban Morel sur la terrasse de La Pointe" sizes="(min-width: 64em) 38vw, 100vw" />
+      </div>
+      <div class="portrait__text">
+        <SectionTitle eyebrow="L'hôte" title="Alban, <em>enfant de la pointe</em>" />
+        <blockquote class="portrait__quote" data-reveal>
+          <p>
+            Mordu d'alimentation vivante, moniteur de voile au Centre Nautique de Sarzeau dix saisons durant et dingue du
+            site de La Pointe depuis sa plus tendre enfance.
+          </p>
+        </blockquote>
+        <p class="lead" data-reveal>
+          Entouré d'une équipe aux petits soins, Alban vous accueille dans ce club-house unique, pensé avec et pour le
+          Centre Nautique de Sarzeau.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--sand" aria-labelledby="chronologie">
+    <div class="container">
+      <SectionTitle id="chronologie" eyebrow="Chronologie" title="Cinquante ans <em>au bord de l'eau</em>" />
+      <ol role="list" class="timeline">
+        {
+          timeline.map((t) => (
+            <li data-reveal>
+              <span class="timeline__year">{t.year}</span>
+              <div>
+                <h3>{t.title}</h3>
+                <p>{t.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container split">
+      <div class="split__text">
+        <SectionTitle eyebrow="Un lieu intégré" title="Respecter <em>l'esprit de Penvins</em>">
+          <p>
+            Depuis 2015, le site est dynamisé tout en s'intégrant aux grandes lignes paysagères, économiques et
+            écologiques de Penvins, en partenariat étroit avec le Centre Nautique de Sarzeau.
+          </p>
+        </SectionTitle>
+        <p data-reveal class="split__note">
+          Que ce soit pour vous restaurer ou simplement boire un verre, vous profiterez d'une vue incroyable sur
+          l'océan. Toute l'équipe se fera un plaisir de vous recevoir — pensez à réserver !
+        </p>
+        <div class="split__actions" data-reveal>
+          <a class="btn" href={url('restaurant-sur-la-plage/')}>Le restaurant <Icon name="arrow" /></a>
+          <a class="btn btn--ghost" href={url('contact/')}>Nous contacter</a>
+        </div>
+      </div>
+      <div class="mosaic3" data-reveal="fade">
+        <div class="media m1">
+          <Photo src={aerial} alt="Vue aérienne de la Presqu'île de Rhuys, de la pointe et des plages" sizes="(min-width: 64em) 45vw, 100vw" />
+        </div>
+        <div class="media m2">
+          <Photo src={chapelleCiel} alt="La chapelle de Penvins vue du ciel, entourée de verdure et de rochers" sizes="(min-width: 64em) 22vw, 50vw" />
+        </div>
+        <div class="media m3">
+          <Photo src={kite} alt="Kitesurfeur en saut au large de Penvins" sizes="(min-width: 64em) 22vw, 50vw" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand image={cta} alt="Le restaurant La Pointe illuminé à la tombée de la nuit, au-dessus des dunes" position="50% 45%" />
+</BaseLayout>
+
+<style>
+  .portrait {
+    display: grid;
+    gap: clamp(3rem, 6vw, 6rem);
+    align-items: center;
+  }
+  .portrait__img {
+    aspect-ratio: 5 / 6;
+    max-height: 48rem;
+  }
+  .portrait__text {
+    display: grid;
+    gap: 2rem;
+  }
+  .portrait__quote {
+    padding-left: 1.5rem;
+    border-left: 1px solid var(--copper);
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    line-height: 1.25;
+    font-style: italic;
+  }
+  @media (min-width: 64em) {
+    .portrait {
+      grid-template-columns: 0.9fr 1.1fr;
+    }
+  }
+
+  .timeline {
+    margin-top: clamp(3rem, 6vw, 5rem);
+    border-top: 1px solid var(--line);
+  }
+  .timeline li {
+    display: grid;
+    gap: 1rem 3rem;
+    padding-block: clamp(2rem, 4vw, 3rem);
+    border-bottom: 1px solid var(--line);
+  }
+  .timeline__year {
+    font-family: var(--font-display);
+    font-size: var(--step-3);
+    line-height: 1;
+    color: var(--copper-text);
+  }
+  .timeline h3 {
+    font-size: var(--step-2);
+    margin-bottom: 0.75rem;
+  }
+  .timeline p {
+    color: var(--muted);
+    max-width: 44rem;
+  }
+  @media (min-width: 48em) {
+    .timeline li {
+      grid-template-columns: minmax(12rem, 1fr) 2.2fr;
+    }
+  }
+
+  .mosaic3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .m1 {
+    grid-column: span 2;
+    aspect-ratio: 16 / 10;
+  }
+  .m2,
+  .m3 {
+    aspect-ratio: 1;
+  }
+</style>

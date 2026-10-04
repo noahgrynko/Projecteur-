@@ -1,0 +1,24 @@
+{
+  "name": "la-pointe-penvins",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Site officiel de La Pointe — bar, restaurant & terrasse face à l'océan, Pointe de Penvins, Sarzeau.",
+  "type": "module",
+  "engines": {
+    "node": ">=20.3"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.3.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "typescript": "^6.0.3"
+  }
+}

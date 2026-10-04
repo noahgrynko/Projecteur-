@@ -1,0 +1,33 @@
+---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+/**
+ * Image responsive optimisée : AVIF + WebP, largeurs adaptées, lazy loading par
+ * défaut. Passer `priority` pour l'image LCP (hero).
+ */
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  sizes?: string;
+  priority?: boolean;
+  class?: string;
+  position?: string;
+}
+const { src, alt, sizes = '100vw', priority = false, class: className, position } = Astro.props;
+const candidates = [480, 960, 1440, 1920];
+const widths = [...candidates.filter((w) => w < src.width), src.width];
+---
+<Picture
+  src={src}
+  alt={alt}
+  widths={widths}
+  sizes={sizes}
+  formats={['avif', 'webp']}
+  quality={72}
+  loading={priority ? 'eager' : 'lazy'}
+  decoding={priority ? 'sync' : 'async'}
+  fetchpriority={priority ? 'high' : 'auto'}
+  class={className}
+  style={position ? `object-position:${position}` : undefined}
+/>

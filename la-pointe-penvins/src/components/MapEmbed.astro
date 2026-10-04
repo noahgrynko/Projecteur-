@@ -1,0 +1,123 @@
+---
+import Icon from './Icon.astro';
+import { business } from '../data/site';
+
+/**
+ * Carte Google chargée uniquement à la demande : aucun cookie tiers ni script
+ * externe tant que le visiteur n'a pas cliqué (performances + RGPD).
+ */
+---
+<div class="map" data-map>
+  <div class="map__placeholder">
+    <svg class="map__pattern" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <pattern id="contours" width="80" height="40" patternUnits="userSpaceOnUse">
+          <path d="M0 20c20 0 20-10 40-10s20 10 40 10" fill="none" stroke="currentColor" stroke-width="0.6"></path>
+        </pattern>
+      </defs>
+      <rect width="400" height="300" fill="url(#contours)"></rect>
+    </svg>
+    <div class="map__body">
+      <Icon name="pin" size={30} />
+      <p class="map__title">{business.address.street}<br />{business.address.postalCode} {business.address.city}</p>
+      <p class="map__coords">{business.coordinatesLabel}</p>
+      <div class="map__actions">
+        <button type="button" class="btn btn--light btn--map" data-map-load>Afficher la carte</button>
+        <a class="link-arrow" href={business.links.maps} target="_blank" rel="noopener">
+          Itinéraire <Icon name="external" />
+        </a>
+      </div>
+      <p class="map__note">L'affichage de la carte charge un contenu Google Maps.</p>
+    </div>
+  </div>
+  <template data-map-template>
+    <iframe
+      src={business.links.mapsEmbed}
+      title="Carte Google Maps : La Pointe, 12 Route de la Chapelle, Sarzeau"
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      allowfullscreen></iframe>
+  </template>
+</div>
+
+<style>
+  .map {
+    position: relative;
+    height: 26rem;
+    background: var(--ink-2);
+    color: var(--foam);
+    overflow: hidden;
+  }
+  @media (min-width: 64em) {
+    .map {
+      height: auto;
+      aspect-ratio: 4 / 3;
+    }
+  }
+  .map :global(iframe) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .map__placeholder {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: 2rem;
+  }
+  .map__pattern {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    color: rgb(247 243 236 / 0.12);
+  }
+  .map__body {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    gap: 0.9rem;
+  }
+  .map__body > :global(svg) {
+    color: var(--copper-light);
+  }
+  .map__title {
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    line-height: 1.15;
+  }
+  .map__coords {
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    color: rgb(247 243 236 / 0.7);
+  }
+  .map__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1.25rem;
+    margin-top: 0.5rem;
+  }
+  .map__note {
+    font-size: 0.75rem;
+    color: rgb(247 243 236 / 0.6);
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-map]').forEach((map) => {
+    const button = map.querySelector<HTMLButtonElement>('[data-map-load]');
+    const template = map.querySelector<HTMLTemplateElement>('[data-map-template]');
+    button?.addEventListener('click', () => {
+      if (!template) return;
+      map.append(template.content.cloneNode(true));
+      map.querySelector('.map__placeholder')?.remove();
+      map.querySelector('iframe')?.focus();
+    });
+  });
+</script>

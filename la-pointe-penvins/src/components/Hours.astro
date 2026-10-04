@@ -1,0 +1,140 @@
+---
+import Icon from './Icon.astro';
+import { business, openingHours, kitchenHours, seasonInfo } from '../data/site';
+
+/** Tableau des horaires, avec mise en avant du jour courant (côté client). */
+interface Props {
+  dark?: boolean;
+}
+const { dark = false } = Astro.props;
+const h = (t: string) => t.replace(':', 'h');
+const schemaDays = openingHours.map((d) => d.schema);
+---
+<div class:list={['hours', { 'hours--dark': dark }]} data-hours>
+  <table>
+    <caption class="visually-hidden">Horaires d'ouverture du bar et du restaurant</caption>
+    <tbody>
+      {
+        openingHours.map((d) => (
+          <tr>
+            <th scope="row">{d.day}</th>
+            <td>
+              {h(d.open)} — {h(d.close)}
+            </td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+
+  <dl class="hours__kitchen">
+    <div>
+      <dt><Icon name="fork" size={18} /> Cuisine</dt>
+      <dd>
+        {
+          kitchenHours.map((k) => (
+            <span>
+              {k.label} {k.value}
+            </span>
+          ))
+        }
+      </dd>
+    </div>
+    <div>
+      <dt><Icon name="calendar" size={18} /> Saison</dt>
+      <dd>{seasonInfo.map((s) => <span>{s}</span>)}</dd>
+    </div>
+  </dl>
+  <p class="hours__note">
+    Les horaires peuvent varier selon la météo et la saison :
+    <a href={business.links.google} target="_blank" rel="noopener">consultez notre fiche Google</a> pour les informations
+    du jour.
+  </p>
+</div>
+
+<style>
+  .hours {
+    font-size: 0.98rem;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th,
+  td {
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    font-weight: 400;
+  }
+  td {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  tr.is-today th,
+  tr.is-today td {
+    font-weight: 600;
+    color: var(--copper-text);
+  }
+  tr.is-today th::after {
+    content: "Aujourd'hui";
+    margin-left: 0.75rem;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid currentColor;
+    border-radius: 99px;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    vertical-align: 0.15em;
+  }
+  .hours__kitchen {
+    display: grid;
+    gap: 1.25rem;
+    margin-top: 2rem;
+  }
+  .hours__kitchen dt {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--copper-text);
+  }
+  .hours__kitchen dd {
+    display: grid;
+    margin-top: 0.4rem;
+  }
+  .hours__note {
+    margin-top: 1.75rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .hours__note a {
+    color: inherit;
+  }
+  .hours--dark th,
+  .hours--dark td {
+    border-color: var(--line-light);
+  }
+  .hours--dark tr.is-today th,
+  .hours--dark tr.is-today td,
+  .hours--dark .hours__kitchen dt {
+    color: var(--copper-light);
+  }
+  .hours--dark .hours__note {
+    color: rgb(247 243 236 / 0.68);
+  }
+</style>
+
+<script define:vars={{ schemaDays }}>
+  // Met en évidence le jour actuel (heure de Paris).
+  const day = new Intl.DateTimeFormat('en-US', { weekday: 'long', timeZone: 'Europe/Paris' }).format(new Date());
+  const index = schemaDays.indexOf(day);
+  if (index >= 0) {
+    document.querySelectorAll('[data-hours]').forEach((el) => {
+      el.querySelectorAll('tbody tr')[index]?.classList.add('is-today');
+    });
+  }
+</script>

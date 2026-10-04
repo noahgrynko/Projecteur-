@@ -1,0 +1,46 @@
+---
+/** Titre de section : sur-titre + titre éditorial + chapeau optionnel. */
+interface Props {
+  eyebrow: string;
+  title: string;
+  level?: 'h2' | 'h3';
+  align?: 'start' | 'center';
+  class?: string;
+  id?: string;
+}
+const { eyebrow, title, level: Tag = 'h2', align = 'start', class: className, id } = Astro.props;
+---
+<header class:list={['section-title', `section-title--${align}`, className]} data-reveal>
+  <p class="eyebrow">{eyebrow}</p>
+  <Tag class="section-title__h" id={id} set:html={title} />
+  {
+    Astro.slots.has('default') && (
+      <div class="lead">
+        <slot />
+      </div>
+    )
+  }
+</header>
+
+<style>
+  .section-title {
+    display: grid;
+    gap: 1.4rem;
+    max-width: 44rem;
+  }
+  .section-title--center {
+    margin-inline: auto;
+    text-align: center;
+    justify-items: center;
+  }
+  .section-title__h {
+    font-size: var(--step-4);
+  }
+  .section-title__h :global(em) {
+    color: var(--copper-text);
+  }
+  :global(.on-dark) .section-title__h :global(em),
+  :global(.section--ink) .section-title__h :global(em) {
+    color: var(--copper-light);
+  }
+</style>

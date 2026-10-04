@@ -1,0 +1,63 @@
+---
+import LegalLayout from '../../layouts/LegalLayout.astro';
+import { business } from '../../data/site';
+import { url } from '../../data/url';
+
+const site = new URL(url(), Astro.site).host;
+---
+<LegalLayout
+  title="Mentions légales — La Pointe, restaurant vue sur mer à Penvins"
+  description="Mentions légales du site de La Pointe, bar restaurant vue sur mer à Penvins, sur la Presqu'île de Rhuys."
+  heading="Mentions légales"
+  path="mentions/"
+>
+  <h2>Éditeur du site</h2>
+  <p>
+    <strong>{business.legalName}</strong><br />
+    {business.address.street}, {business.address.postalCode} {business.address.city}<br />
+    Téléphone : <a href={`tel:${business.phoneIntl}`}>{business.phone}</a><br />
+    Email : <a href="mailto:sealbanmorel@gmail.com">sealbanmorel@gmail.com</a><br />
+    Inscrite au Registre du Commerce et des Sociétés de Vannes sous le numéro 812 029 338.<br />
+    Directeur de la publication : Alban Morel.
+  </p>
+
+  <h2>Hébergement</h2>
+  <p>
+    Le site est un site statique hébergé par GitHub, Inc. — 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107,
+    États-Unis (service GitHub Pages).
+  </p>
+
+  <h2>Propriété intellectuelle</h2>
+  <p>
+    L'ensemble de ce site relève de la législation française et internationale sur le droit d'auteur et la propriété
+    intellectuelle. Tous les droits de reproduction sont réservés, y compris pour les documents téléchargeables et les
+    représentations iconographiques et photographiques. Les photographies sont la propriété de La Pointe et de leurs
+    auteurs : toute reproduction est interdite sans autorisation.
+  </p>
+
+  <h2>Limitation de responsabilité</h2>
+  <p>
+    {business.legalName} ne saurait être tenue responsable des erreurs rencontrées sur le site, des problèmes techniques,
+    de l'interprétation des informations publiées et des conséquences de leur utilisation. Les horaires et cartes sont
+    donnés à titre indicatif et peuvent évoluer selon la saison. L'utilisateur reconnaît utiliser ces informations sous
+    sa responsabilité exclusive.
+  </p>
+
+  <h2>Données personnelles</h2>
+  <p>
+    La collecte et le traitement de vos données personnelles sont conformes au Règlement général sur la protection des
+    données (RGPD) et à la loi Informatique et Libertés. Vous disposez d'un droit d'accès, de rectification, d'opposition,
+    de suppression et de portabilité de vos données. Pour exercer ces droits, écrivez à
+    <a href="mailto:sealbanmorel@gmail.com">sealbanmorel@gmail.com</a> ou à {business.legalName},
+    {business.address.street}, {business.address.postalCode} {business.address.city}.
+  </p>
+  <p>
+    Pour en savoir plus, consultez notre <a href={url('rgpd/')}>politique de confidentialité</a>.
+  </p>
+
+  <h2>Liens hypertextes et cookies</h2>
+  <p>
+    Le site {site} contient des liens vers d'autres sites (réservation, réseaux sociaux, cartographie) et décline toute
+    responsabilité quant à leur contenu. Le site ne dépose aucun cookie de mesure d'audience ou publicitaire.
+  </p>
+</LegalLayout>

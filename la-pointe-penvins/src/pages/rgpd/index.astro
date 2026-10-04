@@ -1,0 +1,62 @@
+---
+import LegalLayout from '../../layouts/LegalLayout.astro';
+import { business } from '../../data/site';
+---
+<LegalLayout
+  title="Politique de confidentialité — La Pointe, Penvins Sarzeau"
+  description="Politique de confidentialité et de protection des données personnelles du site de La Pointe, bar restaurant à Penvins, Sarzeau."
+  heading="Politique de confidentialité"
+  path="rgpd/"
+  updated="octobre 2026"
+>
+  <p>
+    {business.legalName} accorde la plus grande importance à la confidentialité de vos informations lors de votre
+    navigation sur ce site, conformément à la loi Informatique et Libertés et au Règlement général sur la protection des
+    données (RGPD).
+  </p>
+
+  <h2>1. Responsable du traitement</h2>
+  <p>
+    {business.legalName}, immatriculée sous le numéro 812 029 338, représentée par Alban Morel, dont le siège est situé
+    {business.address.street}, {business.address.postalCode} {business.address.city}, France. Contact :
+    <a href="mailto:sealbanmorel@gmail.com">sealbanmorel@gmail.com</a>.
+  </p>
+
+  <h2>2. Données collectées</h2>
+  <p>Ce site est un site vitrine statique. Il ne propose ni compte utilisateur ni paiement en ligne et :</p>
+  <ul>
+    <li>ne dépose aucun cookie de mesure d'audience, de publicité ou de réseau social ;</li>
+    <li>ne stocke aucune donnée saisie dans le formulaire de contact : celui-ci ouvre simplement votre messagerie avec un
+      message pré-rempli, que vous choisissez d'envoyer ou non ;</li>
+    <li>ne charge la carte Google Maps qu'après un clic explicite de votre part.</li>
+  </ul>
+  <p>
+    Lorsque vous nous écrivez ou nous appelez, nous utilisons vos nom, prénom, email, téléphone et message uniquement
+    pour répondre à votre demande.
+  </p>
+
+  <h2>3. Services tiers</h2>
+  <ul>
+    <li><strong>Réservation en ligne</strong> : assurée par la plateforme Overfull, qui traite les données nécessaires à
+      votre réservation selon sa propre politique de confidentialité.</li>
+    <li><strong>Google Maps</strong> : chargé uniquement à votre demande ; Google peut alors déposer des cookies et
+      collecter des données de navigation.</li>
+    <li><strong>Instagram et Facebook</strong> : de simples liens, aucun module n'est intégré au site.</li>
+    <li><strong>Hébergement</strong> : GitHub Pages, qui peut enregistrer l'adresse IP des visiteurs dans ses journaux
+      techniques à des fins de sécurité.</li>
+  </ul>
+
+  <h2>4. Durée de conservation</h2>
+  <p>
+    Les échanges par email sont conservés le temps nécessaire au traitement de votre demande, puis au maximum trois ans
+    après le dernier contact, sauf obligation légale contraire.
+  </p>
+
+  <h2>5. Vos droits</h2>
+  <p>
+    Vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité de
+    vos données. Pour les exercer, écrivez à <a href="mailto:sealbanmorel@gmail.com">sealbanmorel@gmail.com</a> ou par
+    courrier à l'adresse ci-dessus. Vous pouvez également introduire une réclamation auprès de la CNIL
+    (<a href="https://www.cnil.fr" target="_blank" rel="noopener">www.cnil.fr</a>).
+  </p>
+</LegalLayout>

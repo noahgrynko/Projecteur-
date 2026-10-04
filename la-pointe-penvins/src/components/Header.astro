@@ -1,0 +1,423 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { business, navigation } from '../data/site';
+import { url } from '../data/url';
+
+interface Props {
+  /** Header transparent sur un visuel sombre, puis plein au défilement. */
+  overlay?: boolean;
+}
+const { overlay = true } = Astro.props;
+const current = Astro.url.pathname;
+const isCurrent = (href: string) => current === url(href) || current.startsWith(url(href).replace(/\/$/, '') + '/');
+---
+<header class:list={['site-header', { 'is-solid': !overlay }]} data-header>
+  <div class="site-header__inner container">
+    <a class="site-header__brand" href={url()}>
+      <Logo />
+    </a>
+
+    <nav class="site-nav" aria-label="Navigation principale">
+      <ul role="list">
+        {
+          navigation.map((item) => (
+            <li>
+              <a href={url(item.href)} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      <a class="site-header__phone" href={`tel:${business.phoneIntl}`}>
+        <Icon name="phone" size={18} />
+        <span>{business.phone}</span>
+      </a>
+      <a class="btn btn--small site-header__cta" href={business.links.booking} target="_blank" rel="noopener">
+        Réserver
+      </a>
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        data-menu-toggle
+      >
+        <span class="visually-hidden" data-menu-label>Ouvrir le menu</span>
+        <span class="menu-toggle__bars" aria-hidden="true"><span></span><span></span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
+  <div class="mobile-menu__inner container">
+    <nav aria-label="Navigation mobile">
+      <ol role="list" class="mobile-menu__list">
+        <li style="--i:0"><a href={url()} aria-current={current === url() ? 'page' : undefined}>Accueil</a></li>
+        {
+          navigation.map((item, i) => (
+            <li style={`--i:${i + 1}`}>
+              <a href={url(item.href)} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+    <div class="mobile-menu__footer">
+      <a class="btn btn--light" href={business.links.booking} target="_blank" rel="noopener">
+        Réserver une table <Icon name="arrow" />
+      </a>
+      <a class="btn btn--ghost-light" href={`tel:${business.phoneIntl}`}>
+        <Icon name="phone" /> {business.phone}
+      </a>
+      <p class="mobile-menu__address">
+        {business.address.street}, {business.address.postalCode} {business.address.city}
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .site-header {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 50;
+    color: var(--foam);
+    transition:
+      background-color 0.5s var(--ease),
+      color 0.5s var(--ease),
+      box-shadow 0.5s var(--ease),
+      transform 0.5s var(--ease);
+  }
+  .site-header::before {
+    /* voile discret pour garantir la lisibilité sur le visuel */
+    content: '';
+    position: absolute;
+    inset: 0 0 -2.5rem;
+    z-index: -1;
+    background: linear-gradient(rgb(8 16 24 / 0.5), transparent);
+    pointer-events: none;
+    transition: opacity 0.5s var(--ease);
+  }
+  .site-header.is-solid,
+  .site-header.is-scrolled {
+    background: rgb(247 243 236 / 0.92);
+    color: var(--ink);
+    box-shadow: 0 1px 0 var(--line);
+    backdrop-filter: saturate(1.4) blur(14px);
+    -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  }
+  .site-header.is-solid::before,
+  .site-header.is-scrolled::before {
+    opacity: 0;
+  }
+  .site-header.is-hidden {
+    transform: translateY(-100%);
+  }
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    height: var(--header-h);
+  }
+  .site-header__brand {
+    text-decoration: none;
+    flex: none;
+  }
+
+  .site-nav {
+    display: none;
+  }
+  .site-nav ul {
+    display: flex;
+    gap: clamp(1.25rem, 2.2vw, 2.4rem);
+  }
+  .site-nav a {
+    position: relative;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding-block: 0.5rem;
+  }
+  .site-nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.15rem;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.45s var(--ease-out);
+  }
+  .site-nav a:hover::after,
+  .site-nav a[aria-current='page']::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+  .site-header__phone {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .site-header__cta {
+    display: none;
+  }
+  .btn--small {
+    min-height: 2.75rem;
+    padding: 0.65rem 1.3rem;
+    font-size: 0.72rem;
+  }
+  .site-header:not(.is-solid, .is-scrolled) .site-header__cta {
+    --btn-bg: transparent;
+    --btn-fg: var(--foam);
+    --btn-bd: rgb(247 243 236 / 0.6);
+  }
+
+  .menu-toggle {
+    position: relative;
+    z-index: 60;
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    margin-right: -0.6rem;
+    border: 0;
+    background: none;
+  }
+  .menu-toggle__bars {
+    display: grid;
+    gap: 7px;
+    width: 1.6rem;
+  }
+  .menu-toggle__bars span {
+    height: 1.5px;
+    background: currentColor;
+    transition: transform 0.45s var(--ease-out);
+  }
+  .menu-toggle[aria-expanded='true'] .menu-toggle__bars span:first-child {
+    transform: translateY(4.25px) rotate(45deg);
+  }
+  .menu-toggle[aria-expanded='true'] .menu-toggle__bars span:last-child {
+    transform: translateY(-4.25px) rotate(-45deg);
+  }
+
+  @media (min-width: 40em) {
+    .site-header__cta {
+      display: inline-flex;
+    }
+  }
+  @media (min-width: 68em) {
+    .site-nav {
+      display: block;
+    }
+    .menu-toggle {
+      display: none;
+    }
+  }
+  @media (min-width: 90em) {
+    .site-header__phone {
+      display: inline-flex;
+    }
+  }
+
+  /* ---------- Menu mobile plein écran ---------- */
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 45;
+    display: flex;
+    background: var(--ink);
+    color: var(--foam);
+    overflow-y: auto;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.45s var(--ease),
+      visibility 0s linear 0.45s;
+  }
+  .mobile-menu.is-open {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.45s var(--ease);
+  }
+  .mobile-menu__inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2.5rem;
+    padding-top: calc(var(--header-h) + 2rem);
+    padding-bottom: 2.5rem;
+    min-height: 100%;
+  }
+  .mobile-menu__list {
+    counter-reset: item;
+  }
+  .mobile-menu__list li {
+    border-bottom: 1px solid var(--line-light);
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity 0.6s var(--ease-out),
+      transform 0.6s var(--ease-out);
+    transition-delay: calc(0.08s + var(--i) * 0.045s);
+  }
+  .mobile-menu.is-open .mobile-menu__list li {
+    opacity: 1;
+    transform: none;
+  }
+  .mobile-menu__list a {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding-block: 0.85rem;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 8vw, 2.75rem);
+    line-height: 1.1;
+    text-decoration: none;
+  }
+  .mobile-menu__list a::before {
+    counter-increment: item;
+    content: counter(item, decimal-leading-zero);
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--copper-light);
+  }
+  .mobile-menu__list a[aria-current='page'] {
+    font-style: italic;
+    color: var(--copper-light);
+  }
+  .mobile-menu__footer {
+    display: grid;
+    gap: 0.75rem;
+  }
+  .mobile-menu__address {
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    color: rgb(247 243 236 / 0.7);
+  }
+  :global(html.menu-open) .site-header {
+    background: transparent;
+    color: var(--foam);
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    transform: none;
+  }
+  :global(html.menu-open) .site-header::before {
+    opacity: 0;
+  }
+  :global(html.menu-open) .site-header__cta {
+    visibility: hidden;
+  }
+  :global(html.menu-open) {
+    overflow: hidden;
+  }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const label = document.querySelector<HTMLElement>('[data-menu-label]');
+  const menu = document.querySelector<HTMLElement>('[data-mobile-menu]');
+
+  // État du header au défilement : plein après le haut de page, masqué en descendant.
+  if (header) {
+    let lastY = window.scrollY;
+    let ticking = false;
+    const update = () => {
+      const y = window.scrollY;
+      header.classList.toggle('is-scrolled', y > 40);
+      const goingDown = y > lastY && y > window.innerHeight * 0.6;
+      header.classList.toggle('is-hidden', goingDown && !document.documentElement.classList.contains('menu-open'));
+      lastY = y;
+      ticking = false;
+    };
+    update();
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (!ticking) {
+          requestAnimationFrame(update);
+          ticking = true;
+        }
+      },
+      { passive: true },
+    );
+  }
+
+  // Menu mobile accessible : aria-expanded, Échap, piège de focus, retour du focus.
+  if (toggle && menu && label) {
+    const focusables = () =>
+      [toggle, ...menu.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')].filter(
+        (el) => el.offsetParent !== null || el === toggle,
+      );
+
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      label.textContent = open ? 'Fermer le menu' : 'Ouvrir le menu';
+      document.documentElement.classList.toggle('menu-open', open);
+      if (open) {
+        menu.hidden = false;
+        requestAnimationFrame(() => {
+          menu.classList.add('is-open');
+          menu.querySelector<HTMLElement>('a')?.focus({ preventScroll: true });
+        });
+      } else {
+        menu.classList.remove('is-open');
+        window.setTimeout(() => {
+          if (!menu.classList.contains('is-open')) menu.hidden = true;
+        }, 450);
+      }
+    };
+
+    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+    menu.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) setOpen(false);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (toggle.getAttribute('aria-expanded') !== 'true') return;
+      if (e.key === 'Escape') {
+        setOpen(false);
+        toggle.focus();
+      } else if (e.key === 'Tab') {
+        const items = focusables();
+        const first = items[0];
+        const last = items[items.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    });
+    window.matchMedia('(min-width: 68em)').addEventListener('change', (e) => {
+      if (e.matches) setOpen(false);
+    });
+  }
+</script>

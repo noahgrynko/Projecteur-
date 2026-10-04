@@ -1,0 +1,187 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import SectionTitle from '../../components/SectionTitle.astro';
+import Photo from '../../components/Photo.astro';
+import Icon from '../../components/Icon.astro';
+import Hours from '../../components/Hours.astro';
+import { business } from '../../data/site';
+
+import hero from '../../assets/photos/soiree-dj.jpg';
+import convives from '../../assets/photos/terrasse-convives.jpg';
+import guirlandes from '../../assets/photos/terrasse-guirlandes.jpg';
+import voie from '../../assets/photos/voie-lactee.jpg';
+
+const formats = [
+  {
+    icon: 'sun',
+    title: 'Soirées au coucher du soleil',
+    text: 'DJ sets, concerts et apéros en musique sur la terrasse, quand le ciel se met à flamboyer.',
+  },
+  {
+    icon: 'users',
+    title: 'EVJF, EVG & anniversaires',
+    text: 'Un cadre inoubliable pour célébrer entre amis, avec des formules imaginées sur-mesure.',
+  },
+  {
+    icon: 'sail',
+    title: "Séminaires & sorties d'équipe",
+    text: 'Déjeuner face à la mer et cocktail au couchant, à deux pas du Centre Nautique de Sarzeau.',
+  },
+] as const;
+---
+<BaseLayout
+  title="Évènements & actualités — La Pointe, restaurant à Penvins, Golfe du Morbihan"
+  description="Soirées, concerts et évènements au bar restaurant La Pointe, à Penvins sur la Presqu'île de Rhuys. Privatisations et formules groupes dès 15 personnes : EVJF, EVG, anniversaires."
+  image={hero}
+  imageAlt="Soirée DJ au coucher du soleil sur la plage de Penvins"
+  breadcrumb={[{ name: 'Évènements', path: 'nos-actualites/' }]}
+>
+  <PageHero
+    eyebrow="Évènements & actualités"
+    title="Les belles soirées <em>de la Pointe</em>"
+    image={hero}
+    alt="DJ installé dans un van vintage face à la mer, au coucher du soleil"
+  >
+    <p>Soirées, concerts, couchers de soleil en musique : invitez-vous aux plus belles heures de la presqu'île.</p>
+  </PageHero>
+
+  <section class="section">
+    <div class="container split">
+      <div class="split__text">
+        <SectionTitle eyebrow="À l'affiche" title="Suivez la programmation <em>sur nos réseaux</em>">
+          <p>
+            Nos soirées et festivités sont annoncées au fil de la saison sur Instagram et Facebook. Abonnez-vous pour ne
+            rien manquer des prochains rendez-vous.
+          </p>
+        </SectionTitle>
+        <div class="split__actions" data-reveal>
+          <a class="btn" href={business.links.instagram} target="_blank" rel="noopener">
+            <Icon name="instagram" /> Instagram
+          </a>
+          <a class="btn btn--ghost" href={business.links.facebook} target="_blank" rel="noopener">
+            <Icon name="facebook" /> Facebook
+          </a>
+        </div>
+      </div>
+      <div class="media feature" data-reveal="fade">
+        <Photo src={guirlandes} alt="Terrasse éclairée par des guirlandes, la mer au loin" sizes="(min-width: 64em) 45vw, 100vw" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--ink" aria-labelledby="privatiser">
+    <div class="container">
+      <SectionTitle id="privatiser" eyebrow="Groupes & privatisation" title="Votre évènement, <em>face à l'océan</em>">
+        <p>
+          À partir de 15 personnes, nous construisons avec vous une formule spéciale et sur-mesure — repas, apéritif
+          dînatoire ou soirée.
+        </p>
+      </SectionTitle>
+      <ul role="list" class="formats">
+        {
+          formats.map((f, i) => (
+            <li data-reveal style={`--reveal-delay:${i * 0.1}s`}>
+              <Icon name={f.icon} size={32} />
+              <h3>{f.title}</h3>
+              <p>{f.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="formats__cta" data-reveal>
+        <a class="btn btn--light" href={`mailto:${business.email}?subject=Demande%20d%27%C3%A9v%C3%A8nement`}>
+          {business.email} <Icon name="arrow" />
+        </a>
+        <a class="btn btn--ghost-light" href={`tel:${business.phoneIntl}`}>
+          <Icon name="phone" /> {business.phone}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="horaires-evt">
+    <div class="container split">
+      <div class="duo" data-reveal="fade">
+        <div class="media">
+          <Photo src={convives} alt="Tablée d'amis servie en terrasse" sizes="(min-width: 64em) 22vw, 50vw" />
+        </div>
+        <div class="media">
+          <Photo src={voie} alt="Ciel étoilé et voie lactée au-dessus de la mer" sizes="(min-width: 64em) 22vw, 50vw" />
+        </div>
+      </div>
+      <div>
+        <h2 id="horaires-evt" class="h-small" data-reveal>Horaires</h2>
+        <div data-reveal><Hours /></div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .feature {
+    aspect-ratio: 4 / 5;
+    max-height: 42rem;
+  }
+  .formats {
+    display: grid;
+    gap: 1px;
+    margin-block: clamp(3rem, 6vw, 4.5rem);
+    background: var(--line-light);
+    border-block: 1px solid var(--line-light);
+  }
+  .formats li {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+    padding: 2.5rem 0;
+    background: var(--ink);
+  }
+  .formats :global(svg) {
+    color: var(--copper-light);
+  }
+  .formats h3 {
+    font-size: var(--step-2);
+  }
+  .formats p {
+    color: rgb(247 243 236 / 0.72);
+  }
+  @media (min-width: 48em) {
+    .formats {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .formats li {
+      padding: 3rem 2rem;
+    }
+    .formats li:first-child {
+      padding-left: 0;
+    }
+  }
+  .formats__cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .formats__cta .btn {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    text-transform: none;
+    letter-spacing: 0.02em;
+    font-size: 0.9rem;
+  }
+  .duo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .duo .media {
+    aspect-ratio: 3 / 4;
+  }
+  .duo .media:last-child {
+    margin-top: 4rem;
+  }
+  .h-small {
+    font-size: var(--step-3);
+    margin-bottom: 1.5rem;
+  }
+</style>
