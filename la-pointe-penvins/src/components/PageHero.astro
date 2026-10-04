@@ -13,8 +13,10 @@ interface Props {
 const { eyebrow, title, image, alt, position } = Astro.props;
 ---
 <section class="page-hero on-dark">
-  <div class="page-hero__media media">
-    <Photo src={image} alt={alt} priority position={position} />
+  <div class="page-hero__media media media--parallax">
+    <div data-parallax="0.18">
+      <Photo src={image} alt={alt} priority position={position} />
+    </div>
   </div>
   <div class="page-hero__content container">
     <p class="eyebrow">{eyebrow}</p>

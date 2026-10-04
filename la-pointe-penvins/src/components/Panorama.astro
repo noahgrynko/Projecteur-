@@ -1,0 +1,469 @@
+---
+import type { ImageMetadata } from 'astro';
+import Photo from './Photo.astro';
+
+/**
+ * Panorama à 270° piloté par le défilement.
+ * La section est épinglée (sticky) : le défilement vertical fait tourner une
+ * « caméra » de 0° à 270° autour de la pointe. Chaque scène s'incurve en
+ * profondeur, son image se déplace à l'intérieur du cadre et le cap s'affiche
+ * en direct. Sans JavaScript ou avec « réduire les animations », les scènes
+ * s'empilent simplement les unes sous les autres.
+ */
+interface Scene {
+  title: string;
+  line: string;
+  image: ImageMetadata;
+  alt: string;
+}
+interface Props {
+  scenes: Scene[];
+}
+const { scenes } = Astro.props;
+const step = 270 / (scenes.length - 1);
+const pad = (n: number) => String(Math.round(n)).padStart(3, '0');
+// Arc du cadran : 270° ouverts vers le bas
+const R = 44;
+const arcLength = (2 * Math.PI * R * 270) / 360;
+---
+<section class="pano" data-pano style={`--n:${scenes.length}`} aria-labelledby="pano-title">
+  <div class="pano__sticky">
+    <div class="pano__intro" data-pano-intro>
+      <p class="eyebrow">Tour d'horizon</p>
+      <h2 id="pano-title" class="display">270<span>°</span></h2>
+      <p class="pano__hint">Faites défiler pour tourner la caméra</p>
+    </div>
+
+    <div class="pano__stage" data-pano-stage>
+      <ol role="list" class="pano__track" data-pano-track>
+        {
+          scenes.map((s, i) => (
+            <li class="pano__scene" data-pano-scene>
+              <div class="pano__frame">
+                <div class="pano__img" data-pano-img>
+                  <Photo
+                    src={s.image}
+                    alt={s.alt}
+                    sizes="(orientation: portrait) 200vw, 140vw"
+                  />
+                </div>
+                <div class="pano__shade" data-pano-shade />
+              </div>
+              <div class="pano__caption container" data-pano-caption>
+                <span class="pano__deg">{pad(i * step)}°</span>
+                <h3>{s.title}</h3>
+                <p>{s.line}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+
+
+    <div class="pano__hud container" aria-hidden="true">
+      <svg class="pano__dial" viewBox="0 0 100 100">
+        <circle class="pano__dial-track" cx="50" cy="50" r={R} style={`stroke-dasharray:${arcLength} 999`}></circle>
+        <circle
+          class="pano__dial-progress"
+          data-pano-arc
+          cx="50"
+          cy="50"
+          r={R}
+          style={`stroke-dasharray:${arcLength} 999;stroke-dashoffset:${arcLength}`}></circle>
+        <g class="pano__dial-needle" data-pano-needle>
+          <line x1="50" y1="50" x2="50" y2="14"></line>
+          <circle cx="50" cy="50" r="2.5"></circle>
+        </g>
+      </svg>
+      <div class="pano__readout">
+        <span class="pano__bearing" data-pano-bearing>000°</span>
+        <span class="pano__name" data-pano-name>{scenes[0].title}</span>
+      </div>
+      <ol class="pano__ticks" role="list">
+        {scenes.map((_, i) => <li data-pano-tick class:list={{ 'is-active': i === 0 }} />)}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ---------- Repli : scènes empilées (sans JS / mouvement réduit) ---------- */
+  .pano {
+    position: relative;
+    background: var(--ink);
+    color: var(--foam);
+  }
+  .pano__scene {
+    position: relative;
+    height: max(100svh, 32rem);
+    overflow: hidden;
+  }
+  .pano__frame,
+  .pano__img {
+    position: absolute;
+    inset: 0;
+  }
+  .pano__img :global(picture),
+  .pano__img :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .pano__shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgb(8 16 24 / 0.75), rgb(8 16 24 / 0) 55%);
+  }
+  .pano__caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: clamp(7rem, 16vh, 10rem);
+    display: grid;
+    gap: 0.6rem;
+    justify-items: start;
+  }
+  .pano__deg {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    color: var(--copper-light);
+  }
+  .pano__caption h3 {
+    font-size: clamp(3rem, 1.8rem + 6vw, 8.5rem);
+    line-height: 0.92;
+  }
+  .pano__caption p {
+    max-width: 26rem;
+    font-size: var(--step-1);
+    color: rgb(247 243 236 / 0.85);
+  }
+  .pano__hud {
+    display: none;
+  }
+  /* hors mode immersif, le titre reste lisible par les lecteurs d'écran */
+  .pano:not(.is-live) .pano__intro {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  /* ---------- Mode immersif ---------- */
+  /* même hauteur que la version empilée : aucun saut à l'activation */
+  .pano.is-live {
+    height: calc(var(--n) * max(100svh, 32rem));
+  }
+  .is-live .pano__sticky {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    overflow: hidden;
+    /* perspective = rayon du cylindre : la caméra est au centre */
+    perspective: var(--radius, 1700px);
+    perspective-origin: 50% 50%;
+  }
+  .is-live .pano__stage {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+  }
+  .is-live .pano__track {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+  .is-live .pano__scene {
+    position: absolute;
+    left: 0;
+    /* plus haut que l'écran : pas de vide aux plis du cylindre */
+    top: -7%;
+    width: 100%;
+    height: 114%;
+    min-height: 0;
+    overflow: visible;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+  }
+  .is-live .pano__caption {
+    bottom: calc(7% + clamp(7rem, 16vh, 10rem));
+  }
+  .is-live .pano__frame {
+    overflow: hidden;
+    /* recouvrement d'un pixel : pas de jour entre deux pans */
+    inset: 0 -1px;
+  }
+  .is-live .pano__img {
+    right: auto;
+    width: var(--img-w, 130%);
+    will-change: transform;
+  }
+  .is-live .pano__shade {
+    background:
+      linear-gradient(0deg, rgb(8 16 24 / 0.8), rgb(8 16 24 / 0) 50%),
+      rgb(8 16 24 / var(--dim, 0));
+  }
+  .is-live .pano__caption {
+    will-change: transform, opacity;
+  }
+
+  .is-live .pano__intro {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 1.75rem;
+    text-align: center;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, rgb(8 16 24 / 0.55), rgb(8 16 24 / 0.15) 70%);
+  }
+  .pano__intro h2 {
+    font-size: clamp(6rem, 3rem + 18vw, 20rem);
+    line-height: 1;
+    margin-block: -0.12em;
+  }
+  .pano__intro h2 span {
+    color: var(--copper-light);
+  }
+  .pano__hint {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgb(247 243 236 / 0.8);
+  }
+
+  .is-live .pano__hud {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc(1.25rem + env(safe-area-inset-bottom));
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    pointer-events: none;
+  }
+  .pano__dial {
+    width: 3.75rem;
+    height: 3.75rem;
+    flex: none;
+    /* ouvre l'arc de 270° vers le bas-gauche */
+    transform: rotate(135deg);
+  }
+  .pano__dial circle {
+    fill: none;
+    stroke-width: 2;
+  }
+  .pano__dial-track {
+    stroke: rgb(247 243 236 / 0.25);
+  }
+  .pano__dial-progress {
+    stroke: var(--copper-light);
+  }
+  .pano__dial-needle {
+    transform-origin: 50px 50px;
+    transform: rotate(-90deg);
+  }
+  .pano__dial-needle line {
+    stroke: var(--foam);
+    stroke-width: 1.5;
+  }
+  .pano__dial-needle circle {
+    fill: var(--foam);
+    stroke: none;
+  }
+  .pano__readout {
+    display: grid;
+    gap: 0.15rem;
+  }
+  .pano__bearing {
+    font-family: var(--font-display);
+    font-size: 1.9rem;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .pano__name {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgb(247 243 236 / 0.75);
+  }
+  .pano__ticks {
+    display: none;
+    gap: 0.5rem;
+    margin-left: auto;
+  }
+  .pano__ticks li {
+    width: 1.75rem;
+    height: 2px;
+    background: rgb(247 243 236 / 0.25);
+    transition: background-color 0.4s var(--ease);
+  }
+  .pano__ticks li.is-active {
+    background: var(--copper-light);
+  }
+  @media (min-width: 48em) {
+    .pano__ticks {
+      display: flex;
+    }
+  }
+  @media (max-width: 47.99em) {
+    .is-live .pano__hud {
+      /* au-dessus de la barre d'actions mobile */
+      bottom: calc(5.25rem + env(safe-area-inset-bottom));
+    }
+    .is-live .pano__caption {
+      bottom: calc(7% + 10rem + env(safe-area-inset-bottom));
+    }
+  }
+</style>
+
+<script>
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Le mode immersif s'active quand la section devient visible : les photos des
+  // scènes ne concurrencent donc pas le chargement initial de la page.
+  const setup = (root: HTMLElement) => {
+    root.classList.add('is-live');
+
+    const track = root.querySelector<HTMLElement>('[data-pano-track]')!;
+    const scenes = [...root.querySelectorAll<HTMLElement>('[data-pano-scene]')];
+    const imgs = scenes.map((s) => s.querySelector<HTMLElement>('[data-pano-img]')!);
+    const captions = scenes.map((s) => s.querySelector<HTMLElement>('[data-pano-caption]')!);
+    const intro = root.querySelector<HTMLElement>('[data-pano-intro]')!;
+    const bearing = root.querySelector<HTMLElement>('[data-pano-bearing]')!;
+    const name = root.querySelector<HTMLElement>('[data-pano-name]')!;
+    const arc = root.querySelector<SVGCircleElement>('[data-pano-arc]')!;
+    const needle = root.querySelector<SVGGElement>('[data-pano-needle]')!;
+    const ticks = [...root.querySelectorAll<HTMLElement>('[data-pano-tick]')];
+    const titles = captions.map((c) => c.querySelector('h3')?.textContent ?? '');
+    const n = scenes.length;
+    const arcLength = parseFloat(arc.style.strokeDasharray);
+
+    const STEP = 270 / (n - 1); // degrés entre deux scènes
+    const halfStep = ((STEP / 2) * Math.PI) / 180;
+    let W = 0;
+    let H = 0;
+    let R = 0;
+    let panRange: number[] = [];
+    let target = 0;
+    let current = 0;
+    let running = false;
+    let lastIndex = -1;
+
+    // Largeur d'affichage de chaque image : assez large pour pouvoir la parcourir.
+    const measure = () => {
+      W = root.clientWidth;
+      H = window.innerHeight;
+      // Rayon tel qu'une scène face à la caméra remplisse exactement l'écran.
+      R = W / 2 / Math.tan(halfStep);
+      root.style.setProperty('--radius', `${R.toFixed(1)}px`);
+      scenes.forEach((s, i) => {
+        s.style.transform = `rotateY(${(-i * STEP).toFixed(3)}deg) translateZ(${(-R).toFixed(1)}px)`;
+      });
+      panRange = imgs.map((wrap) => {
+        const img = wrap.querySelector('img');
+        const ratio = img && img.naturalWidth ? img.naturalWidth / img.naturalHeight : 1.6;
+        const w = Math.max(W * 1.3, H * ratio);
+        wrap.style.setProperty('--img-w', `${w}px`);
+        return w - W;
+      });
+    };
+
+    const readTarget = () => {
+      const r = root.getBoundingClientRect();
+      const total = root.offsetHeight - H;
+      target = Math.min(1, Math.max(0, -r.top / total));
+    };
+
+    const render = () => {
+      const pos = current * (n - 1);
+      // La caméra pivote au centre du cylindre.
+      track.style.transform = `translateZ(${R.toFixed(1)}px) rotateY(${(pos * STEP).toFixed(3)}deg)`;
+
+      for (let i = 0; i < n; i++) {
+        const local = pos - i; // 0 = face à la caméra ; <0 à droite ; >0 passée
+        // Les pans à plus de ~85° de la caméra sont masqués (derrière l'œil).
+        scenes[i].style.visibility = Math.abs(local) > 1.9 ? 'hidden' : 'visible';
+        const d = Math.min(1.5, Math.abs(local));
+        if (d >= 1.5) continue;
+        // La caméra balaie l'image à l'intérieur de son cadre.
+        const t = (Math.max(-1, Math.min(1, -local)) + 1) / 2;
+        imgs[i].style.transform = `translate3d(${(-panRange[i] * (1 - t)).toFixed(1)}px,0,0) scale(${(1 + d * 0.05).toFixed(3)})`;
+        scenes[i].style.setProperty('--dim', (Math.min(1, d) * 0.5).toFixed(3));
+        const c = captions[i];
+        const fadeIn = i === 0 ? Math.min(1, Math.max(0, (current - 0.06) * 14)) : 1;
+        c.style.opacity = String(Math.max(0, 1 - d * 2.4) * fadeIn);
+        c.style.transform = `translate3d(${(-local * 60).toFixed(1)}px, ${(d * 24).toFixed(1)}px, 0)`;
+      }
+
+      intro.style.opacity = String(Math.max(0, 1 - current * 9));
+      intro.style.transform = `scale(${(1 + current * 1.5).toFixed(3)})`;
+
+      const deg = current * 270;
+      bearing.textContent = `${String(Math.round(deg)).padStart(3, '0')}°`;
+      arc.style.strokeDashoffset = String(arcLength * (1 - current));
+      needle.style.transform = `rotate(${(deg - 90).toFixed(1)}deg)`;
+      const index = Math.round(pos);
+      if (index !== lastIndex) {
+        name.textContent = titles[index];
+        ticks.forEach((t, i) => t.classList.toggle('is-active', i <= index));
+        lastIndex = index;
+      }
+    };
+
+    // Inertie de caméra : on rattrape la cible en douceur.
+    const tick = () => {
+      current += (target - current) * 0.09;
+      if (Math.abs(target - current) < 0.0002) current = target;
+      render();
+      running = current !== target;
+      if (running) requestAnimationFrame(tick);
+    };
+    const kick = () => {
+      readTarget();
+      if (!running) {
+        running = true;
+        requestAnimationFrame(tick);
+      }
+    };
+
+    measure();
+    readTarget();
+    current = target;
+    render();
+    window.addEventListener('scroll', kick, { passive: true });
+    window.addEventListener('resize', () => {
+      measure();
+      kick();
+    });
+    imgs.forEach((wrap) =>
+      wrap.querySelector('img')?.addEventListener('load', () => {
+        measure();
+        render();
+      }),
+    );
+  };
+
+  if (!reduce) {
+    document.querySelectorAll<HTMLElement>('[data-pano]').forEach((root) => {
+      const io = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) {
+            io.disconnect();
+            setup(root);
+          }
+        },
+        { threshold: 0.01 },
+      );
+      io.observe(root);
+    });
+  }
+</script>

@@ -5,6 +5,9 @@ Presqu'île de Rhuys). Refonte complète de [lapointe-penvins.com](https://www.l
 
 - **Technologie** : [Astro 7](https://astro.build) — site 100 % statique, zéro framework JavaScript côté client
 - **Images** : pipeline Astro/sharp — AVIF + WebP, tailles responsives, lazy loading
+- **Signature** : panorama à 270° piloté par le défilement (`src/components/Panorama.astro`) — les scènes sont
+  posées sur un cylindre en CSS 3D et la caméra pivote au centre ; repli en scènes empilées sans JavaScript ou
+  avec « réduire les animations »
 - **Hébergement** : GitHub Pages, déployé automatiquement par GitHub Actions à chaque push sur `main`
 
 ## Démarrer en local
@@ -28,12 +31,13 @@ src/
 ├── assets/
 │   ├── fonts/          Instrument Serif + Hanken Grotesk (auto-hébergées, licence OFL)
 │   └── photos/         Photos sources (optimisées automatiquement au build)
-├── components/         Header, Footer, Photo, Hours, MapEmbed, CtaBand, PageHero…
+├── components/         Panorama (270°), Header, Footer, Photo, Hours, MapEmbed, CtaBand, PageHero…
 ├── data/
 │   ├── site.ts         ⚑ Coordonnées, horaires, liens, avis — à modifier ici
 │   └── url.ts          Gestion du sous-chemin (préversion GitHub Pages)
 ├── layouts/            BaseLayout (SEO, Open Graph, JSON-LD), LegalLayout
 ├── pages/              Une page = une URL (mêmes URL que l'ancien site)
+├── scripts/scroll-fx.ts Apparitions et parallaxe au défilement
 └── styles/global.css   Système de design (couleurs, typographie, boutons)
 public/                 Favicons, manifest, cartes PDF (mêmes URL que l'ancien site)
 ```

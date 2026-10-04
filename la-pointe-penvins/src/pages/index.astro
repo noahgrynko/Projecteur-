@@ -1,106 +1,72 @@
 ---
-import type { ImageMetadata } from 'astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Photo from '../components/Photo.astro';
 import Icon from '../components/Icon.astro';
-import SectionTitle from '../components/SectionTitle.astro';
-import Hours from '../components/Hours.astro';
-import MapEmbed from '../components/MapEmbed.astro';
-import Testimonials from '../components/Testimonials.astro';
+import Panorama from '../components/Panorama.astro';
 import CtaBand from '../components/CtaBand.astro';
-import { business } from '../data/site';
+import { business, openingHours, testimonials } from '../data/site';
 import { url } from '../data/url';
 
 import hero from '../assets/photos/pointe-penvins-vue-aerienne.jpg';
-import panorama from '../assets/photos/terrasse-panorama.jpg';
-import enseigne from '../assets/photos/enseigne.jpg';
-import routard from '../assets/photos/guide-routard.jpg';
-import huitres from '../assets/photos/huitres.jpg';
-import cocktail from '../assets/photos/terrasse-guirlandes.jpg';
-import soiree from '../assets/photos/soiree-dj.jpg';
-import sunset from '../assets/photos/coucher-soleil-dunes.jpg';
-import g1 from '../assets/photos/terrasse-vue-drone.jpg';
-import g2 from '../assets/photos/cocktail-passion.jpg';
-import g3 from '../assets/photos/salon-terrasse.jpg';
-import g4 from '../assets/photos/assiette-poisson.jpg';
-import g5 from '../assets/photos/kitesurf.jpg';
-import g6 from '../assets/photos/terrasse-rose.jpg';
-import g7 from '../assets/photos/voie-lactee.jpg';
-import chapelle from '../assets/photos/chapelle-plage.jpg';
+import ilot from '../assets/photos/ilot-penvins.jpg';
 import plage from '../assets/photos/plage-penvins.jpg';
-import glisse from '../assets/photos/wing-foil.jpg';
-import golfe from '../assets/photos/baie-voiliers.jpg';
+import chapellePlage from '../assets/photos/chapelle-plage.jpg';
+import dunes from '../assets/photos/chapelle-dunes.jpg';
+import panoramaTerrasse from '../assets/photos/terrasse-panorama.jpg';
+import baie from '../assets/photos/baie-voiliers.jpg';
+import couchant from '../assets/photos/coucher-soleil-dunes.jpg';
+import huitres from '../assets/photos/huitres.jpg';
+import guirlandes from '../assets/photos/terrasse-guirlandes.jpg';
+import soiree from '../assets/photos/soiree-dj.jpg';
+import sunset from '../assets/photos/coucher-soleil.jpg';
+import chapelleCiel from '../assets/photos/chapelle-vue-ciel.jpg';
+import oyats from '../assets/photos/dunes-oyats.jpg';
+import kite from '../assets/photos/kitesurf.jpg';
+import presquile from '../assets/photos/presquile-drone.jpg';
+import g1 from '../assets/photos/cocktail-passion.jpg';
+import g2 from '../assets/photos/salon-terrasse.jpg';
+import g3 from '../assets/photos/terrasse-vue-drone.jpg';
+import g4 from '../assets/photos/assiette-poisson.jpg';
+import g5 from '../assets/photos/terrasse-rose.jpg';
+import g6 from '../assets/photos/wing-foil.jpg';
+import g7 from '../assets/photos/biere-bar.jpg';
+import g8 from '../assets/photos/voie-lactee.jpg';
+import g9 from '../assets/photos/enseigne.jpg';
+import g10 from '../assets/photos/parasol-dunes.jpg';
 import crepuscule from '../assets/photos/restaurant-crepuscule.jpg';
 
+const scenes = [
+  { title: 'La pointe', line: "L'îlot, les rochers, l'eau claire.", image: ilot, alt: "Vue aérienne de l'îlot rocheux de la pointe de Penvins et de ses eaux turquoise" },
+  { title: 'Le large', line: 'Sable fin et horizon ouvert.', image: plage, alt: 'Plage de sable de Penvins face au large, sous un ciel bleu' },
+  { title: 'La chapelle', line: 'Notre-Dame-de-la-Côte, les pieds dans le sable.', image: chapellePlage, alt: 'La chapelle de Penvins au bord de la plage, un catamaran sur le sable' },
+  { title: 'Les dunes', line: 'Oyats, sentier côtier et vent du large.', image: dunes, alt: 'Dunes et oyats de Penvins, la chapelle au loin' },
+  { title: 'La terrasse', line: 'Notre table, au milieu du paysage.', image: panoramaTerrasse, alt: 'La terrasse de La Pointe et ses parasols au-dessus des dunes, au soleil couchant' },
+  { title: 'Le golfe', line: "Voiles blanches et Presqu'île de Rhuys.", image: baie, alt: 'Vue aérienne de la baie et de voiliers au large de la Presqu’île de Rhuys' },
+  { title: 'Le couchant', line: 'Le grand final, chaque soir.', image: couchant, alt: 'Soleil rouge se couchant sur la mer derrière les herbes des dunes' },
+];
+
 const experiences = [
-  {
-    title: 'Le restaurant',
-    text: "Huîtres du Morbihan, poisson du moment, planches à partager et burgers maison : une cuisine de produits frais, locaux et bio, servie face à la mer.",
-    href: 'restaurant-sur-la-plage/',
-    cta: 'Voir le restaurant',
-    image: huitres,
-    alt: "Plateau d'huîtres du Morbihan servi sur la terrasse, la mer en arrière-plan",
-  },
-  {
-    title: 'Le bar & la terrasse',
-    text: "Cocktails maison, verres de vin et huîtres à partager, en continu dès 11h. Une terrasse en bois ouverte sur 270° d'horizon pour ralentir, enfin.",
-    href: 'bar-de-plage/',
-    cta: 'Voir le bar',
-    image: cocktail,
-    alt: 'Terrasse de La Pointe à la tombée du jour sous les guirlandes lumineuses, face à la mer',
-  },
-  {
-    title: 'Évènements & groupes',
-    text: "Soirées, concerts, anniversaires, EVJF, EVG ou repas d'entreprise : formules sur-mesure dès 15 personnes, avec l'océan pour décor.",
-    href: 'nos-actualites/',
-    cta: 'Organiser un évènement',
-    image: soiree,
-    alt: 'Soirée DJ au coucher du soleil sur la plage de Penvins devant un van vintage',
-  },
+  { title: 'Le restaurant', line: 'Marée du jour, huîtres du Morbihan, produits bio.', href: 'restaurant-sur-la-plage/', image: huitres, alt: "Plateau d'huîtres du Morbihan au citron, face à la mer" },
+  { title: 'Le bar', line: 'Cocktails face au large, dès 11h.', href: 'bar-de-plage/', image: guirlandes, alt: 'Terrasse illuminée de guirlandes au crépuscule, la mer en fond' },
+  { title: 'Les soirées', line: 'Concerts, DJ sets et couchers de soleil.', href: 'nos-actualites/', image: soiree, alt: 'Soirée DJ au coucher du soleil devant un van vintage, face à la mer' },
 ];
 
-const gallery = [
-  { src: g1, alt: 'Vue aérienne de la terrasse de La Pointe et de ses parasols blancs', cls: 'g--tall' },
-  { src: g2, alt: 'Cocktail à la passion décoré d’un physalis', cls: '' },
-  { src: g3, alt: 'Salon extérieur de la terrasse avec coussins bleus au crépuscule', cls: '' },
-  { src: g4, alt: 'Assiette de poisson sur crème de betterave et jeunes pousses', cls: 'g--wide' },
-  { src: g5, alt: 'Kitesurfeur en plein saut devant la pointe de Penvins', cls: 'g--tall' },
-  { src: g6, alt: 'Terrasse en bois sous un ciel rose au coucher du soleil', cls: '' },
-  { src: g7, alt: 'Voie lactée au-dessus de la mer, plancton bioluminescent sur le rivage', cls: '' },
+const places = [
+  { title: 'La chapelle', tag: 'Patrimoine', image: chapelleCiel, alt: 'La chapelle de Penvins vue du ciel, entourée de verdure et de rochers' },
+  { title: 'Le sentier côtier', tag: 'Balade · GR34', image: oyats, alt: 'Sentier des dunes bordé d’oyats, la chapelle à l’horizon' },
+  { title: 'La glisse', tag: 'Voile · Kite · Wing', image: kite, alt: 'Kitesurfeur en plein saut au large de Penvins' },
+  { title: 'Les huîtres', tag: 'Le Tour-du-Parc', image: huitres, alt: 'Huîtres du Morbihan servies au citron' },
+  { title: 'La presqu’île', tag: 'Golfe du Morbihan', image: presquile, alt: 'Vue aérienne de la Presqu’île de Rhuys, de ses plages et de la pointe' },
 ];
 
-type Place = { title: string; text: string; image: ImageMetadata; alt: string; position?: string };
-const around: Place[] = [
-  {
-    title: 'La chapelle de Penvins',
-    text: 'Silhouette emblématique de la pointe, la chapelle Notre-Dame-de-la-Côte veille sur la plage, à quelques pas de notre terrasse.',
-    image: chapelle,
-    alt: 'La chapelle de Penvins au bord de la plage, un catamaran échoué sur le sable',
-    position: '12% 50%',
-  },
-  {
-    title: 'Les plages & le sentier côtier',
-    text: "Sable fin, rochers et sentier côtier : de part et d'autre de la pointe, la côte se découvre à pied ou à vélo.",
-    image: plage,
-    alt: 'Plage de sable de Penvins à marée basse sous un ciel bleu',
-  },
-  {
-    title: 'Voile, kite & wing foil',
-    text: "La Pointe est le club-house du Centre Nautique de Sarzeau : un spot réputé pour la voile et toutes les glisses.",
-    image: glisse,
-    alt: 'Pratiquants de wing foil dans les vagues au large de Penvins',
-  },
-  {
-    title: 'Le Golfe du Morbihan',
-    text: "Entre océan et petite mer, la Presqu'île de Rhuys ouvre sur le Golfe, ses îles, Vannes et la côte sauvage.",
-    image: golfe,
-    alt: "Vue aérienne de la baie et de voiliers au large de la Presqu'île de Rhuys",
-  },
-];
+const rowA = [g1, g2, g3, g4, g5];
+const rowB = [g6, g7, g8, g9, g10];
+const quote = testimonials[0];
+const h = (t: string) => t.replace(':00', 'h').replace(':', 'h');
 ---
 <BaseLayout
   title="La Pointe — Bar restaurant vue mer à Penvins, Sarzeau · Presqu'île de Rhuys"
-  description="La Pointe, bar et restaurant face à l'océan à Penvins (Sarzeau). Vue mer à 270°, cuisine de produits frais, locaux et bio, cocktails et couchers de soleil sur la Presqu'île de Rhuys. Réservez votre table."
+  description="La Pointe, bar et restaurant face à l'océan à la Pointe de Penvins (Sarzeau). Vue mer à 270°, produits frais, locaux et bio, cocktails et couchers de soleil sur la Presqu'île de Rhuys. Réservez votre table."
 >
   <!-- ============ HERO ============ -->
   <section class="hero on-dark" aria-labelledby="hero-title">
@@ -113,116 +79,49 @@ const around: Place[] = [
       />
     </div>
     <div class="hero__content container">
-      <p class="eyebrow hero__in" style="--d:0.1s">Bar · Restaurant · Terrasse — Penvins, Sarzeau</p>
+      <p class="eyebrow">Penvins · Sarzeau · Presqu'île de Rhuys</p>
       <h1 id="hero-title" class="hero__title">
-        L'océan à 270°, <em>au bout de la pointe.</em>
+        La Pointe<span class="visually-hidden"> — bar, restaurant et terrasse vue mer à Penvins</span>
       </h1>
-      <p class="hero__lead">
-        Bar, restaurant et terrasse posés sur la Pointe de Penvins. Une cuisine de produits frais, locaux et bio, des
-        cocktails, et les plus beaux couchers de soleil de la Presqu'île de Rhuys.
-      </p>
-      <div class="hero__actions hero__in" style="--d:0.3s">
+      <p class="hero__tagline">Bar · Restaurant · Terrasse <em>face à l'océan</em></p>
+      <div class="hero__actions">
         <a class="btn btn--light" href={business.links.booking} target="_blank" rel="noopener">
-          Réserver une table <Icon name="arrow" />
+          Réserver <Icon name="arrow" />
         </a>
-        <a class="btn btn--ghost-light" href={url('restaurant-sur-la-plage/')}>Découvrir la carte</a>
+        <a class="btn btn--ghost-light" href="#panorama">Explorer</a>
       </div>
     </div>
-    <div class="hero__bar container hero__in" style="--d:0.5s">
-      <ul role="list">
-        <li><Icon name="clock" size={18} /> Ouvert 7j/7 en saison · dès 11h</li>
-        <li><Icon name="pin" size={18} /> {business.address.street}, {business.address.city}</li>
-        <li class="hero__coords">{business.coordinatesLabel}</li>
-      </ul>
-      <a class="hero__scroll" href="#le-lieu">
-        <span>Découvrir</span>
-        <Icon name="arrow-down" size={18} />
-      </a>
-    </div>
+    <a class="hero__scroll" href="#panorama" aria-label="Commencer le panorama">
+      <span class="hero__scroll-line"></span>
+    </a>
   </section>
 
-  <!-- ============ LE LIEU ============ -->
-  <section class="section intro" id="le-lieu" aria-labelledby="lieu-titre">
-    <div class="container intro__grid">
-      <div class="intro__text">
-        <p class="eyebrow" data-reveal>Le lieu</p>
-        <h2 id="lieu-titre" class="intro__statement" data-reveal>
-          Un club-house les pieds dans le sable, entre <em>la chapelle, les dunes</em> et le grand large.
-        </h2>
-        <div class="intro__body" data-reveal>
-          <p>
-            Depuis 2015, La Pointe est le club-house du Centre Nautique de Sarzeau. Alban, moniteur de voile pendant dix
-            saisons et amoureux du site depuis l'enfance, y prolonge une histoire de famille commencée sur ce littoral
-            dans les années 70.
-          </p>
-          <p>
-            On y vient pour déjeuner après une session de voile, partager une planche au soleil ou trinquer face au
-            couchant, avec une équipe aux petits soins.
-          </p>
-          <a class="link-arrow" href={url('a-propos/')}>Notre histoire <Icon name="arrow" /></a>
-        </div>
-      </div>
-      <div class="intro__visual" data-reveal="fade">
-        <div class="intro__main media">
-          <Photo
-            src={panorama}
-            alt="La terrasse de La Pointe et ses parasols face à la mer, au soleil couchant"
-            sizes="(min-width: 64em) 45vw, 100vw"
-          />
-        </div>
-        <div class="intro__inset media">
-          <Photo
-            src={enseigne}
-            alt="Enseigne ronde La Pointe — restaurant, bar, terrasse — sur la façade en bois"
-            sizes="(min-width: 64em) 18vw, 40vw"
-          />
-        </div>
-      </div>
-    </div>
-
-    <div class="container">
-      <dl class="figures">
-        <div data-reveal style="--reveal-delay:0s">
-          <dt>Vue mer panoramique</dt>
-          <dd>270°</dd>
-        </div>
-        <div data-reveal style="--reveal-delay:0.1s">
-          <dt>Club-house du CNS depuis</dt>
-          <dd>2015</dd>
-        </div>
-        <div data-reveal style="--reveal-delay:0.2s">
-          <dt>Producteurs locaux partenaires</dt>
-          <dd>15</dd>
-        </div>
-        <div data-reveal style="--reveal-delay:0.3s">
-          <dt>Ouvert en saison</dt>
-          <dd>7j/7</dd>
-        </div>
-      </dl>
-    </div>
-  </section>
+  <!-- ============ PANORAMA 270° ============ -->
+  <div id="panorama">
+    <Panorama scenes={scenes} />
+  </div>
 
   <!-- ============ EXPÉRIENCES ============ -->
-  <section class="section section--sand experiences" aria-labelledby="exp-titre">
-    <div class="container">
-      <SectionTitle id="exp-titre" eyebrow="Expériences" title="Trois façons de vivre <em>la Pointe</em>">
-        <p>Du premier café au dernier cocktail, la terrasse change de lumière toutes les heures. Choisissez la vôtre.</p>
-      </SectionTitle>
+  <section class="section exp" aria-labelledby="exp-title">
+    <div class="container exp__head" data-reveal>
+      <p class="eyebrow">Vivre la Pointe</p>
+      <h2 id="exp-title">Trois <em>envies</em></h2>
     </div>
-    <ul role="list" class="experiences__list container" aria-label="Nos expériences" data-reveal>
+    <ul role="list" class="exp__list container">
       {
         experiences.map((e, i) => (
-          <li>
-            <a href={url(e.href)} class="exp-card">
-              <div class="exp-card__media media media--zoom">
-                <Photo src={e.image} alt={e.alt} sizes="(min-width: 64em) 30vw, (min-width: 40em) 45vw, 82vw" />
+          <li data-reveal style={`--reveal-delay:${i * 0.1}s`}>
+            <a class="exp-card" href={url(e.href)}>
+              <div class="exp-card__media media media--parallax">
+                <div data-parallax="0.12">
+                  <Photo src={e.image} alt={e.alt} sizes="(min-width: 64em) 32vw, 88vw" />
+                </div>
               </div>
-              <span class="exp-card__num">0{i + 1}</span>
-              <h3 class="exp-card__title">{e.title}</h3>
-              <p class="exp-card__text">{e.text}</p>
-              <span class="link-arrow">
-                {e.cta} <Icon name="arrow" />
-              </span>
+              <div class="exp-card__body">
+                <h3>{e.title}</h3>
+                <p>{e.line}</p>
+                <Icon name="arrow" class="exp-card__arrow" />
+              </div>
             </a>
           </li>
         ))
@@ -230,117 +129,114 @@ const around: Place[] = [
     </ul>
   </section>
 
-  <!-- ============ COUCHER DE SOLEIL ============ -->
-  <section class="sunset on-dark" aria-labelledby="sunset-titre">
-    <div class="sunset__media media">
-      <Photo src={sunset} alt="Soleil couchant sur la mer, derrière les herbes des dunes de Penvins" />
+  <!-- ============ LE COUCHANT ============ -->
+  <section class="sunset on-dark" aria-labelledby="sunset-title">
+    <div class="sunset__media media media--parallax">
+      <div data-parallax="0.2">
+        <Photo src={sunset} alt="Soleil rouge se couchant sur la mer derrière les dunes de Penvins" />
+      </div>
     </div>
-    <div class="sunset__content container" data-reveal>
-      <p class="eyebrow">Le rendez-vous du soir</p>
-      <h2 id="sunset-titre">Chaque soir, le soleil se couche <em>face à vous.</em></h2>
-      <p class="lead">
-        Grande ouverte sur l'océan, la terrasse offre l'un des plus beaux couchers de soleil du Golfe du Morbihan.
-        Venez un peu avant l'heure dorée : c'est là que tout commence.
+    <div class="container sunset__content" data-reveal>
+      <h2 id="sunset-title">Chaque soir,<br /><em>le grand spectacle.</em></h2>
+    </div>
+  </section>
+
+  <!-- ============ À DÉCOUVRIR ============ -->
+  <section class="section around" aria-labelledby="around-title">
+    <div class="container around__head" data-reveal>
+      <div>
+        <p class="eyebrow">Autour de la pointe</p>
+        <h2 id="around-title">À <em>découvrir</em></h2>
+      </div>
+      <p class="around__aside">
+        Château de Suscinio · Golfe du Morbihan · Vannes à 35 min
       </p>
     </div>
-  </section>
-
-  <!-- ============ GALERIE ============ -->
-  <section class="section gallery-preview" aria-labelledby="galerie-titre">
-    <div class="container gallery-preview__head">
-      <SectionTitle id="galerie-titre" eyebrow="Galerie" title="La Pointe <em>en images</em>" />
-      <a class="link-arrow" href={url('galerie-photos/en-photos/')} data-reveal>
-        Toute la galerie <Icon name="arrow" />
-      </a>
-    </div>
-    <div class="container">
-      <ul role="list" class="mosaic">
-        {
-          gallery.map((g, i) => (
-            <li class:list={['media', 'media--zoom', g.cls]} data-reveal="fade" style={`--reveal-delay:${(i % 4) * 0.08}s`}>
-              <Photo src={g.src} alt={g.alt} sizes="(min-width: 64em) 33vw, 50vw" />
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-  </section>
-
-  <!-- ============ AUTOUR DE LA POINTE ============ -->
-  <section class="section section--ink around" aria-labelledby="region-titre">
-    <div class="container around__head">
-      <SectionTitle id="region-titre" eyebrow="La Presqu'île de Rhuys" title="Autour <em>de la pointe</em>">
-        <p>
-          Penvins se trouve sur la côte sud de la Presqu'île de Rhuys, à quelques minutes du bourg de Sarzeau et
-          à environ 35 minutes de Vannes. Une escale idéale entre deux balades.
-        </p>
-      </SectionTitle>
-    </div>
-    <ol role="list" class="around__list container">
+    <ul role="list" class="around__strip" aria-label="Lieux et activités autour de Penvins" data-reveal>
       {
-        around.map((a, i) => (
-          <li data-reveal style={`--reveal-delay:${i * 0.1}s`}>
-            <div class="around__media media">
-              <Photo
-                src={a.image}
-                alt={a.alt}
-                position={a.position}
-                sizes="(min-width: 64em) 24vw, (min-width: 40em) 45vw, 82vw"
-              />
+        places.map((p, i) => (
+          <li class="place">
+            <div class="place__media media media--zoom">
+              <Photo src={p.image} alt={p.alt} sizes="(min-width: 64em) 26vw, 72vw" />
             </div>
-            <h3>{a.title}</h3>
-            <p>{a.text}</p>
+            <span class="place__num">0{i + 1}</span>
+            <h3>{p.title}</h3>
+            <p>{p.tag}</p>
           </li>
         ))
       }
-    </ol>
+    </ul>
   </section>
 
-  <!-- ============ INFOS PRATIQUES ============ -->
-  <section class="section practical" id="infos" aria-labelledby="infos-titre">
-    <div class="container practical__grid">
-      <div>
-        <SectionTitle id="infos-titre" eyebrow="Infos pratiques" title="Préparer <em>votre venue</em>" />
-        <div class="practical__contact" data-reveal>
-          <a href={`tel:${business.phoneIntl}`}>
-            <Icon name="phone" />
-            <span><small>Réservation & renseignements</small>{business.phone}</span>
-          </a>
-          <a href={`mailto:${business.email}`}>
-            <Icon name="mail" />
-            <span><small>Groupes & évènements</small>{business.email}</span>
-          </a>
-          <a href={business.links.maps} target="_blank" rel="noopener">
-            <Icon name="pin" />
-            <span>
-              <small>Adresse</small>
-              {business.address.street}, {business.address.postalCode} {business.address.city}
-            </span>
-          </a>
-        </div>
-        <div class="practical__routard" data-reveal>
-          <div class="practical__routard-img media">
-            <Photo src={routard} alt="Plaques « Recommandé par Le Routard » 2019, 2020 et 2022" sizes="7rem" />
-          </div>
-          <p>
-            <strong>Recommandé par Le Routard</strong>
-            Distingué en 2019, 2020 et 2022.
-          </p>
-        </div>
-      </div>
-      <div class="practical__side">
-        <div class="practical__hours" data-reveal>
+  <!-- ============ GALERIE EN MOUVEMENT ============ -->
+  <section class="reel" aria-labelledby="reel-title">
+    <h2 id="reel-title" class="visually-hidden">La Pointe en images</h2>
+    <div class="reel__row" data-drift="-0.18">
+      {rowA.map((src) => (
+        <div class="reel__item media"><Photo src={src} alt="" sizes="(min-width: 48em) 28vw, 60vw" /></div>
+      ))}
+    </div>
+    <div class="reel__row reel__row--b" data-drift="0.18">
+      {rowB.map((src) => (
+        <div class="reel__item media"><Photo src={src} alt="" sizes="(min-width: 48em) 28vw, 60vw" /></div>
+      ))}
+    </div>
+    <div class="container reel__cta">
+      <a class="link-arrow" href={url('galerie-photos/en-photos/')}>Toute la galerie <Icon name="arrow" /></a>
+    </div>
+  </section>
+
+  <!-- ============ AVIS ============ -->
+  <section class="section quote" aria-label="Avis client">
+    <figure class="container--narrow" data-reveal>
+      <blockquote>
+        <p>« {quote.quote} »</p>
+      </blockquote>
+      <figcaption>{quote.author} · Avis Google</figcaption>
+    </figure>
+  </section>
+
+  <!-- ============ INFOS ============ -->
+  <section class="section section--sand info" id="infos" aria-labelledby="info-title">
+    <div class="container">
+      <h2 id="info-title" class="info__title" data-reveal>Infos <em>pratiques</em></h2>
+      <div class="info__grid">
+        <div class="info__col" data-reveal>
+          <Icon name="clock" />
           <h3>Horaires</h3>
-          <Hours />
+          <p>
+            7j/7 en saison<br />
+            {h(openingHours[0].open)} – {h(openingHours[0].close)} · dimanche → {h(openingHours[6].close)}
+          </p>
+          <a class="link-arrow" href={business.links.google} target="_blank" rel="noopener">
+            Horaires du jour <Icon name="external" />
+          </a>
         </div>
-        <div data-reveal>
-          <MapEmbed />
+        <div class="info__col" data-reveal style="--reveal-delay:0.1s">
+          <Icon name="pin" />
+          <h3>Venir</h3>
+          <p>
+            {business.address.street}<br />
+            {business.address.postalCode} {business.address.city}
+          </p>
+          <a class="link-arrow" href={business.links.maps} target="_blank" rel="noopener">
+            Itinéraire <Icon name="external" />
+          </a>
+        </div>
+        <div class="info__col" data-reveal style="--reveal-delay:0.2s">
+          <Icon name="calendar" />
+          <h3>Réserver</h3>
+          <p>
+            En ligne ou par téléphone<br />
+            <a href={`tel:${business.phoneIntl}`}>{business.phone}</a>
+          </p>
+          <a class="link-arrow" href={business.links.booking} target="_blank" rel="noopener">
+            Réserver une table <Icon name="arrow" />
+          </a>
         </div>
       </div>
     </div>
   </section>
-
-  <Testimonials />
 
   <CtaBand
     image={crepuscule}
@@ -350,11 +246,21 @@ const around: Place[] = [
 </BaseLayout>
 
 <style>
+  h2 {
+    font-size: var(--step-4);
+  }
+  h2 em {
+    color: var(--copper-text);
+  }
+  .on-dark h2 em {
+    color: var(--copper-light);
+  }
+
   /* ---------- Hero ---------- */
   .hero {
     position: relative;
     display: grid;
-    grid-template-rows: 1fr auto;
+    align-items: end;
     min-height: 100svh;
     color: var(--foam);
     isolation: isolate;
@@ -366,286 +272,215 @@ const around: Place[] = [
     z-index: -1;
     background: var(--ink-2);
   }
-  .hero__media :global(img) {
-    animation: hero-zoom 14s var(--ease-out) both;
-  }
   .hero__media::after {
     content: '';
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(180deg, rgb(8 16 24 / 0.55) 0%, rgb(8 16 24 / 0.1) 32%),
-      linear-gradient(0deg, rgb(8 16 24 / 0.9) 0%, rgb(8 16 24 / 0.55) 45%, rgb(8 16 24 / 0.2) 80%);
+      linear-gradient(180deg, rgb(8 16 24 / 0.5) 0%, rgb(8 16 24 / 0) 30%),
+      linear-gradient(0deg, rgb(8 16 24 / 0.85) 0%, rgb(8 16 24 / 0.3) 50%, rgb(8 16 24 / 0.1) 80%);
   }
   .hero__content {
-    align-self: end;
     display: grid;
-    gap: 1.6rem;
+    gap: 1.25rem;
     padding-top: calc(var(--header-h) + 3rem);
-    padding-bottom: clamp(2rem, 5vw, 3.5rem);
+    padding-bottom: clamp(5rem, 12vh, 8rem);
   }
   .hero__title {
-    font-size: var(--step-5);
-    max-width: 12ch;
-    line-height: 0.98;
+    font-size: clamp(4.5rem, 2rem + 13vw, 15rem);
+    line-height: 0.82;
+    letter-spacing: -0.03em;
   }
-  .hero__title em {
-    display: block;
+  .hero__tagline {
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    color: rgb(247 243 236 / 0.9);
+  }
+  .hero__tagline em {
     color: var(--copper-light);
-  }
-  .hero__lead {
-    max-width: 36rem;
-    font-size: var(--step-1);
-    line-height: 1.55;
-    color: rgb(247 243 236 / 0.86);
   }
   .hero__actions {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
-    margin-top: 0.5rem;
-  }
-  .hero__bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
-    padding-block: 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
-    border-top: 1px solid var(--line-light);
-    font-size: 0.8rem;
-    letter-spacing: 0.06em;
-    color: rgb(247 243 236 / 0.8);
-  }
-  .hero__bar ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem 2.25rem;
-  }
-  .hero__bar li {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .hero__bar :global(svg) {
-    color: var(--copper-light);
-  }
-  .hero__coords {
-    letter-spacing: 0.14em;
+    margin-top: 0.75rem;
   }
   .hero__scroll {
-    display: none;
-    align-items: center;
-    gap: 0.75rem;
-    text-decoration: none;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    font-size: 0.7rem;
-    font-weight: 600;
+    position: absolute;
+    left: 50%;
+    bottom: 1.5rem;
+    width: 2.75rem;
+    height: 3.5rem;
+    display: grid;
+    place-items: center;
+    transform: translateX(-50%);
   }
-  .hero__scroll :global(svg) {
-    animation: nudge 2.4s var(--ease) infinite;
+  .hero__scroll-line {
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(rgb(247 243 236 / 0), var(--foam));
+    transform-origin: top;
+    animation: scroll-cue 2.4s var(--ease) infinite;
   }
-  @media (max-width: 39.99em) {
-    .hero__coords,
-    .hero__bar li:nth-child(2) {
-      display: none !important;
-    }
-    .hero__actions .btn {
-      flex: 1 1 100%;
-    }
-  }
-  @media (min-width: 48em) {
+  @media (max-width: 47.99em) {
     .hero__scroll {
-      display: inline-flex;
+      display: none;
+    }
+  }
+  @keyframes scroll-cue {
+    0% {
+      transform: scaleY(0);
+    }
+    50% {
+      transform: scaleY(1);
+      transform-origin: top;
+    }
+    51% {
+      transform-origin: bottom;
+    }
+    100% {
+      transform: scaleY(0);
+      transform-origin: bottom;
     }
   }
   @media (prefers-reduced-motion: no-preference) {
-    .hero__in {
-      animation: rise 1.2s var(--ease-out) both;
-      animation-delay: var(--d, 0s);
+    .hero__content > * {
+      animation: rise 1.3s var(--ease-out) both;
+    }
+    .hero__content > :nth-child(3) {
+      animation-delay: 0.15s;
+    }
+    .hero__content > :nth-child(4) {
+      animation-delay: 0.3s;
+    }
+    .hero__media :global(img) {
+      animation: settle 2.6s var(--ease-out) both;
+    }
+    /* Caméra qui avance : zoom et fondu pilotés par le défilement (navigateurs compatibles) */
+    @supports (animation-timeline: scroll()) {
+      .hero__media {
+        animation: push-in linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 100vh;
+      }
+      .hero__content {
+        animation: lift linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 70vh;
+      }
     }
   }
   @keyframes rise {
     from {
-      opacity: 0;
-      transform: translateY(24px);
+      transform: translateY(30px);
     }
   }
-  @keyframes hero-zoom {
+  @keyframes settle {
     from {
-      transform: scale(1.12);
+      transform: scale(1.1);
     }
   }
-  @keyframes nudge {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(5px);
+  @keyframes push-in {
+    to {
+      transform: scale(1.18);
     }
   }
-
-  /* ---------- Le lieu ---------- */
-  .intro__grid {
-    display: grid;
-    gap: clamp(3rem, 6vw, 6rem);
-    align-items: center;
-  }
-  .intro__text {
-    display: grid;
-    gap: 2rem;
-  }
-  .intro__statement {
-    font-size: var(--step-3);
-    line-height: 1.12;
-  }
-  .intro__statement em {
-    color: var(--copper-text);
-  }
-  .intro__body {
-    display: grid;
-    gap: 1.1rem;
-    max-width: 34rem;
-    color: var(--muted);
-    justify-items: start;
-  }
-  .intro__body .link-arrow {
-    margin-top: 0.75rem;
-    color: var(--ink);
-  }
-  .intro__visual {
-    position: relative;
-    padding-bottom: 12%;
-  }
-  .intro__main {
-    aspect-ratio: 4 / 5;
-  }
-  .intro__inset {
-    position: absolute;
-    left: -6%;
-    bottom: 0;
-    width: 42%;
-    aspect-ratio: 4 / 5;
-    border: 0.5rem solid var(--foam);
-  }
-  @media (min-width: 64em) {
-    .intro__grid {
-      grid-template-columns: 1.05fr 1fr;
-    }
-    .intro__visual {
-      margin-right: calc(-1 * var(--gutter));
-    }
-    .intro__inset {
-      left: -14%;
-    }
-  }
-
-  .figures {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    margin-top: clamp(4rem, 8vw, 7rem);
-    border-top: 1px solid var(--line);
-  }
-  .figures > div {
-    display: flex;
-    flex-direction: column-reverse;
-    gap: 0.5rem;
-    padding: 2rem 1rem 0 0;
-  }
-  .figures dd {
-    font-family: var(--font-display);
-    font-size: var(--step-4);
-    line-height: 1;
-    color: var(--ink);
-  }
-  .figures dt {
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-  @media (min-width: 48em) {
-    .figures {
-      grid-template-columns: repeat(4, 1fr);
-    }
-    .figures > div + div {
-      padding-left: 2rem;
-      border-left: 1px solid var(--line);
+  @keyframes lift {
+    to {
+      transform: translateY(-12vh);
+      opacity: 0;
     }
   }
 
   /* ---------- Expériences ---------- */
-  .experiences__list {
-    display: grid;
-    gap: clamp(2rem, 3vw, 3rem);
-    margin-top: clamp(3rem, 6vw, 5rem);
-  }
-  .exp-card {
+  .exp__head {
     display: grid;
     gap: 1rem;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .exp__list {
+    display: grid;
+    gap: 1.25rem;
+  }
+  .exp-card {
+    position: relative;
+    display: block;
+    color: var(--foam);
     text-decoration: none;
-    justify-items: start;
+    overflow: hidden;
   }
   .exp-card__media {
+    aspect-ratio: 3 / 4;
+    max-height: 80svh;
     width: 100%;
-    aspect-ratio: 4 / 5;
-    margin-bottom: 0.75rem;
   }
-  .exp-card__num {
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    color: var(--copper-text);
+  .exp-card__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgb(8 16 24 / 0.75), rgb(8 16 24 / 0) 55%);
+    transition: background-color 0.6s var(--ease);
   }
-  .exp-card__title {
+  .exp-card:hover .exp-card__media::after {
+    background-color: rgb(8 16 24 / 0.15);
+  }
+  .exp-card__media :global(img) {
+    transition: transform 1.4s var(--ease-out);
+  }
+  .exp-card:hover .exp-card__media :global(img) {
+    transform: scale(1.05);
+  }
+  .exp-card__body {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 0.4rem 1rem;
+    padding: clamp(1.25rem, 3vw, 2rem);
+  }
+  .exp-card h3 {
     font-size: var(--step-3);
+    grid-column: 1;
   }
-  .exp-card__text {
-    color: var(--muted);
-    max-width: 30rem;
+  .exp-card p {
+    grid-column: 1;
+    font-size: 0.95rem;
+    color: rgb(247 243 236 / 0.82);
   }
-  .exp-card .link-arrow {
-    margin-top: 0.5rem;
+  .exp-card :global(.exp-card__arrow) {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0.7rem;
+    border: 1px solid rgb(247 243 236 / 0.5);
+    border-radius: 50%;
+    transition:
+      background-color 0.4s var(--ease),
+      border-color 0.4s var(--ease);
+  }
+  .exp-card:hover :global(.exp-card__arrow) {
+    background: var(--copper);
+    border-color: var(--copper);
   }
   @media (min-width: 64em) {
-    .experiences__list {
+    .exp__list {
       grid-template-columns: repeat(3, 1fr);
     }
-    .experiences__list li:nth-child(2) {
-      margin-top: 5rem;
-    }
-    .experiences__list li:nth-child(3) {
-      margin-top: 2.5rem;
-    }
-  }
-  /* Mobile : carrousel horizontal natif avec aimantation */
-  @media (max-width: 63.99em) {
-    .experiences__list {
-      grid-auto-flow: column;
-      grid-auto-columns: min(82vw, 26rem);
-      width: 100%;
-      padding-inline: var(--gutter);
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      scroll-padding-inline: var(--gutter);
-      scrollbar-width: none;
-    }
-    .experiences__list::-webkit-scrollbar {
-      display: none;
-    }
-    .experiences__list li {
-      scroll-snap-align: start;
+    .exp__list li:nth-child(2) {
+      margin-top: 6rem;
     }
   }
 
-  /* ---------- Coucher de soleil ---------- */
+  /* ---------- Couchant ---------- */
   .sunset {
     position: relative;
     display: grid;
-    align-items: end;
-    min-height: clamp(36rem, 100svh, 60rem);
+    align-items: center;
+    min-height: 110svh;
     color: var(--foam);
     isolation: isolate;
     overflow: hidden;
@@ -660,178 +495,160 @@ const around: Place[] = [
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(0deg, rgb(8 16 24 / 0.85), rgb(8 16 24 / 0.1) 60%);
-  }
-  .sunset__content {
-    display: grid;
-    gap: 1.5rem;
-    padding-block: var(--section);
+    background: rgb(8 16 24 / 0.35);
   }
   .sunset h2 {
     font-size: var(--step-5);
-    max-width: 14ch;
-  }
-  .sunset h2 em {
-    color: var(--copper-light);
-  }
-  .sunset .lead {
-    max-width: 36rem;
   }
 
-  /* ---------- Galerie ---------- */
-  .gallery-preview__head,
+  /* ---------- À découvrir ---------- */
   .around__head {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-end;
     justify-content: space-between;
-    gap: 2rem;
-    margin-bottom: clamp(3rem, 6vw, 4.5rem);
+    gap: 1.5rem 3rem;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
   }
-  .mosaic {
+  .around__head > div {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-auto-rows: clamp(9rem, 22vw, 17rem);
-    grid-auto-flow: dense;
-    gap: clamp(0.5rem, 1vw, 1rem);
+    gap: 1rem;
   }
-  .mosaic li {
-    height: 100%;
-  }
-  .mosaic .g--tall {
-    grid-row: span 2;
-  }
-  .mosaic .g--wide {
-    grid-column: span 2;
-  }
-  @media (min-width: 48em) {
-    .mosaic {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-
-  /* ---------- Autour ---------- */
-  .around__list {
-    display: grid;
-    gap: 3rem 2rem;
-    counter-reset: around;
-  }
-  .around__list li {
-    display: grid;
-    gap: 0.9rem;
-    align-content: start;
-  }
-  .around__media {
-    aspect-ratio: 3 / 4;
-    margin-bottom: 0.75rem;
-    background: var(--ink-2);
-  }
-  .around__list h3 {
-    font-size: var(--step-2);
-  }
-  .around__list h3::before {
-    counter-increment: around;
-    content: counter(around, decimal-leading-zero);
-    display: block;
-    margin-bottom: 0.75rem;
-    font-family: var(--font-body);
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    color: var(--copper-light);
-  }
-  .around__list p {
-    color: rgb(247 243 236 / 0.72);
-    font-size: 0.95rem;
-  }
-  @media (min-width: 40em) {
-    .around__list {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-  @media (min-width: 64em) {
-    .around__list {
-      grid-template-columns: repeat(4, 1fr);
-    }
-    .around__list li:nth-child(even) {
-      margin-top: 4rem;
-    }
-  }
-
-  /* ---------- Infos pratiques ---------- */
-  .practical__grid {
-    display: grid;
-    gap: clamp(3rem, 6vw, 6rem);
-  }
-  .practical__grid > * {
-    min-width: 0;
-  }
-  .practical__contact {
-    display: grid;
-    margin-top: 2.5rem;
-    border-top: 1px solid var(--line);
-  }
-  .practical__contact a {
-    display: flex;
-    align-items: center;
-    gap: 1.25rem;
-    padding-block: 1.25rem;
-    border-bottom: 1px solid var(--line);
-    text-decoration: none;
-    font-size: var(--step-1);
-    overflow-wrap: anywhere;
-    transition: color 0.3s var(--ease);
-  }
-  .practical__contact a:hover {
-    color: var(--copper-text);
-  }
-  .practical__contact :global(svg) {
-    flex: none;
-    color: var(--copper);
-  }
-  .practical__contact small {
-    display: block;
-    font-size: 0.7rem;
+  .around__aside {
+    font-size: 0.78rem;
     font-weight: 600;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--muted);
   }
-  .practical__routard {
-    display: flex;
-    align-items: center;
-    gap: 1.25rem;
-    margin-top: 2.5rem;
-    padding: 1rem;
-    background: var(--sand);
-  }
-  .practical__routard-img {
-    flex: none;
-    width: 5.5rem;
-    aspect-ratio: 1;
-  }
-  .practical__routard p {
-    font-size: 0.9rem;
-    color: var(--muted);
-  }
-  .practical__routard strong {
-    display: block;
-    font-family: var(--font-display);
-    font-size: var(--step-1);
-    font-weight: 400;
-    color: var(--ink);
-  }
-  .practical__side {
+  .around__strip {
     display: grid;
-    gap: 3rem;
+    grid-auto-flow: column;
+    grid-auto-columns: min(72vw, 24rem);
+    gap: 1.25rem;
+    padding-inline: max(var(--gutter), calc((100vw - var(--max)) / 2));
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: max(var(--gutter), calc((100vw - var(--max)) / 2));
+    scrollbar-width: none;
+    padding-bottom: 0.5rem;
   }
-  .practical__hours h3 {
-    margin-bottom: 1rem;
+  .around__strip::-webkit-scrollbar {
+    display: none;
+  }
+  .place {
+    display: grid;
+    gap: 0.4rem;
+    scroll-snap-align: start;
+  }
+  .place__media {
+    aspect-ratio: 4 / 5;
+    margin-bottom: 0.9rem;
+  }
+  .place__num {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: var(--copper-text);
+  }
+  .place h3 {
     font-size: var(--step-2);
   }
-  @media (min-width: 64em) {
-    .practical__grid {
-      grid-template-columns: 0.9fr 1.1fr;
+  .place p {
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ---------- Bandeaux d'images en mouvement ---------- */
+  .reel {
+    padding-block: calc(var(--section) * 0.5) var(--section);
+    overflow: hidden;
+  }
+  .reel__row {
+    display: flex;
+    gap: clamp(0.5rem, 1vw, 1rem);
+    width: max-content;
+    margin-left: -10vw;
+  }
+  .reel__row--b {
+    margin-top: clamp(0.5rem, 1vw, 1rem);
+    margin-left: -30vw;
+  }
+  .reel__item {
+    width: clamp(15rem, 28vw, 30rem);
+    aspect-ratio: 4 / 3;
+  }
+  .reel__cta {
+    margin-top: 2.5rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* ---------- Avis ---------- */
+  .quote {
+    text-align: center;
+    padding-top: 0;
+  }
+  .quote figure {
+    display: grid;
+    gap: 1.75rem;
+  }
+  .quote blockquote {
+    font-family: var(--font-display);
+    font-size: var(--step-3);
+    line-height: 1.15;
+  }
+  .quote figcaption {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ---------- Infos ---------- */
+  .info__title {
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .info__grid {
+    display: grid;
+    gap: 1px;
+    background: var(--line);
+    border-block: 1px solid var(--line);
+  }
+  .info__col {
+    display: grid;
+    gap: 0.75rem;
+    align-content: start;
+    justify-items: start;
+    padding: 2.25rem 0;
+    background: var(--sand);
+  }
+  .info__col > :global(svg) {
+    color: var(--copper);
+  }
+  .info__col h3 {
+    font-size: var(--step-2);
+  }
+  .info__col p {
+    color: var(--muted);
+  }
+  .info__col p a {
+    color: var(--ink);
+    font-size: var(--step-1);
+    text-decoration: none;
+  }
+  @media (min-width: 48em) {
+    .info__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .info__col {
+      padding: 2.5rem 2rem;
+    }
+    .info__col:first-child {
+      padding-left: 0;
     }
   }
 </style>

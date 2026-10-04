@@ -429,6 +429,13 @@ a:focus-visible > .media--zoom img {
   transform: scale(1.04);
 }
 
+/* Parallaxe : le calque déborde du cadre pour ne jamais laisser de vide */
+.media--parallax > [data-parallax] {
+  position: absolute;
+  inset: -14% 0;
+  will-change: transform;
+}
+
 /* ---------- Animations d'apparition (activées seulement si JS + mouvement autorisé) ---------- */
 @media (prefers-reduced-motion: no-preference) {
   .js [data-reveal] {

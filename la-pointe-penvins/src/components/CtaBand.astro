@@ -21,15 +21,14 @@ const {
 } = Astro.props;
 ---
 <section class="cta on-dark" aria-labelledby="cta-titre">
-  <div class="cta__media media">
-    <Photo src={image} alt={alt} position={position} />
+  <div class="cta__media media media--parallax">
+    <div data-parallax="0.2">
+      <Photo src={image} alt={alt} position={position} />
+    </div>
   </div>
   <div class="cta__content container" data-reveal>
     <p class="eyebrow">{eyebrow}</p>
     <h2 id="cta-titre" set:html={title} />
-    <p class="lead">
-      Réservez en ligne en quelques secondes, ou appelez-nous — idéalement en dehors des heures de service.
-    </p>
     <div class="cta__actions">
       <a class="btn btn--light" href={business.links.booking} target="_blank" rel="noopener">
         Réserver en ligne <Icon name="arrow" />

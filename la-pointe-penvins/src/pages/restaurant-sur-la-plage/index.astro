@@ -18,12 +18,12 @@ import groupe from '../../assets/photos/terrasse-convives.jpg';
 import cta from '../../assets/photos/coucher-soleil.jpg';
 
 const menu = [
-  { title: 'Godailles & ripailles', text: 'Planches de fromages et de charcuteries bretonnes, chiffonnade, œufs bio — à partager à l’apéritif.' },
-  { title: 'Les iodés', text: 'Huîtres du Morbihan, tartare d’algues bio de Roscoff, saumon fumé artisanal d’Arzon, bulots et rillettes de la mer.' },
-  { title: 'Bord de mer', text: 'Poisson du moment selon la marée, assiette de la mer, fish & chips et tartare de thon.' },
-  { title: 'Viandes & burgers', text: 'Carbonnade bretonne, tartare au couteau, filet mignon et burgers généreux au pain de boulangerie locale.' },
-  { title: 'Grandes salades', text: 'Des assiettes fraîches et colorées, au fil des légumes bio de la ferme maraîchère voisine.' },
-  { title: 'Douceurs', text: 'Far breton, crêpes de la Fontaine Saint-Père, glaces artisanales et desserts du jour.' },
+  { title: 'Godailles & ripailles', text: 'Planches à partager.' },
+  { title: 'Les iodés', text: 'Huîtres du Morbihan, algues, saumon fumé d’Arzon.' },
+  { title: 'Bord de mer', text: 'Poisson du moment, fish & chips.' },
+  { title: 'Viandes & burgers', text: 'Tartare au couteau, burgers maison.' },
+  { title: 'Grandes salades', text: 'Légumes bio de la ferme voisine.' },
+  { title: 'Douceurs', text: 'Far breton, crêpes, glaces artisanales.' },
 ];
 
 const producers = [
@@ -53,13 +53,12 @@ const producers = [
 >
   <PageHero
     eyebrow="Le restaurant · Penvins, Sarzeau (56)"
-    title="Une cuisine de passionnés, <em>servie face à la mer</em>"
+    title="La table <em>face à la mer</em>"
     image={hero}
     alt="Salle couverte du restaurant La Pointe, tables en bois et grandes baies ouvertes sur la terrasse et la mer"
   >
     <p>
-      Produits frais, locaux et bio, cuisinés par une équipe passionnée de food culture et de glisse, sur l'un des plus
-      beaux spots du Golfe du Morbihan.
+      Produits frais, locaux et bio. Vue mer incluse.
     </p>
   </PageHero>
 
@@ -68,8 +67,7 @@ const producers = [
       <div class="split__text">
         <SectionTitle eyebrow="Notre cuisine" title="Le goût du <em>littoral</em>">
           <p>
-            Notre restaurant est installé sur la pointe de Penvins, face à la mer et aux plus beaux couchers de soleil.
-            Ici, la carte suit les saisons, la marée et les arrivages de nos producteurs voisins.
+            La carte suit la saison, la marée et nos producteurs voisins.
           </p>
         </SectionTitle>
         <div class="split__actions" data-reveal>
@@ -106,8 +104,8 @@ const producers = [
         }
       </ol>
       <p class="menu-note" data-reveal>
-        Aperçu indicatif : la carte change selon les saisons et les arrivages.
-        <a href={url(business.menus.restaurant)} target="_blank" rel="noopener">Voir la carte complète et les prix</a>.
+        Selon saison et arrivages.
+        <a href={url(business.menus.restaurant)} target="_blank" rel="noopener">Carte complète</a>
       </p>
     </div>
   </section>
@@ -117,8 +115,7 @@ const producers = [
       <div class="producers__aside">
         <SectionTitle id="producteurs-titre" eyebrow="Circuit court" title="Nos <em>producteurs</em>">
           <p>
-            Quinze artisans, maraîchers, ostréiculteurs et pêcheurs — la plupart à quelques kilomètres de la terrasse.
-            C'est à eux que nous devons le goût de nos assiettes.
+            Quinze artisans, la plupart à quelques kilomètres.
           </p>
         </SectionTitle>
         <div class="media producers__img" data-reveal="fade">
@@ -147,9 +144,7 @@ const producers = [
       <div class="split__text">
         <SectionTitle id="groupes-titre" eyebrow="Groupes & évènements" title="Vos grands moments, <em>avec vue sur mer</em>">
           <p>
-            EVJF, EVG, anniversaires, repas de famille ou d'entreprise : La Pointe est le lieu idéal pour vos
-            évènements. Pour les groupes à partir de 15 personnes, nous imaginons avec vous des formules spéciales et
-            sur-mesure.
+            EVJF, EVG, anniversaires, entreprises : formules sur-mesure dès 15 personnes.
           </p>
         </SectionTitle>
         <div class="split__actions" data-reveal>
@@ -169,8 +164,7 @@ const producers = [
       <div>
         <SectionTitle id="horaires-titre" eyebrow="Horaires" title="Quand venir <em>déjeuner ou dîner</em>">
           <p>
-            Service du midi jusqu'à 14h30, service du soir jusqu'à 22h. Pensez à réserver, surtout les week-ends et
-            pendant les vacances.
+            Midi jusqu'à 14h30 · soir jusqu'à 22h.
           </p>
         </SectionTitle>
         <div class="media hours-img" data-reveal="fade">
